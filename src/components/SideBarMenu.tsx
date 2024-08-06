@@ -1,14 +1,18 @@
 "use client";
-import React from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { IoMdClose, IoIosArrowForward } from "react-icons/io";
 
-export default function SideBarMenu() {
-  const [open, setOpen] = React.useState(false);
-  const [openSubMenu, setOpenSubMenu] = React.useState(false);
+import React from "react";
+import { GiHamburgerMenu, IoMdClose, IoIosArrowForward } from "@/icons";
+
+
+export default function SideBarMenu({ genres, countries }:{genres: Genres[]|null, countries: Country[]|null}) {
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [openSubMenuGenre, setopenSubMenuGenreGenre] = React.useState<boolean>(false);
+  const [openSubMenuCountry, setopenSubMenuCountry] = React.useState<boolean>(false);
+
+
 
   return (
-    <div>
+    <div className="md:hidden">
       <div onClick={() => setOpen(!open)}>
         <GiHamburgerMenu
           size={35}
@@ -37,44 +41,64 @@ export default function SideBarMenu() {
             <li>
               <div
                 className="flex h-full w-full cursor-pointer justify-between rounded py-3 pl-1 hover:bg-slate-100/60"
-                onClick={() => setOpenSubMenu(!openSubMenu)}
+                onClick={() => setopenSubMenuGenreGenre(!openSubMenuGenre)}
               >
                 <span>Thể loại</span>
                 <IoIosArrowForward
                   size={20}
                   className={`transition-transform duration-500 ${
-                    openSubMenu && "rotate-90"
+                    openSubMenuGenre && "rotate-90"
                   }`}
                 />
               </div>
               {/* Sub menu */}
               <ul
-                className={`${openSubMenu ? "overflow-y-auto" : "overflow-y-hidden"} scrollbar-custom duration-500 ease-in-out ${
-                  openSubMenu ? "max-h-52" : "max-h-0"
+                className={`${openSubMenuGenre ? "overflow-y-auto" : "overflow-y-hidden"} scrollbar-custom duration-500 ease-in-out ${
+                  openSubMenuGenre ? "max-h-52" : "max-h-0"
                 }`}
               >
-                <li className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60">
-                  <span className="mr-1">&bull;</span>Hành động
-                </li>
-                <li className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60">
-                  <span className="mr-1">&bull;</span>Hoạt hình
-                </li>
-                <li className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60">
-                  <span className="mr-1">&bull;</span>Kinh dị
-                </li>
-                <li className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60">
-                  <span className="mr-1">&bull;</span>Cổ trang
-                </li>
-                <li className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60">
-                  <span className="mr-1">&bull;</span>Tình cảm
-                </li>
-                <li className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60">
-                  <span className="mr-1">&bull;</span>Viễn tưởng
-                </li>
+                {genres && genres.length>0 &&
+                  genres?.map((genre) => (
+                    <li
+                      key={genre._id}
+                      className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60"
+                    >
+                      <span className="mr-1">&bull;</span>
+                      {genre.name}
+                    </li>
+                  ))}
               </ul>
             </li>
-            <li className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60">
-              Quốc gia
+            <li>
+              <div
+                className="flex h-full w-full cursor-pointer justify-between rounded py-3 pl-1 hover:bg-slate-100/60"
+                onClick={() => setopenSubMenuCountry(!openSubMenuCountry)}
+              >
+                <span>Quốc gia</span>
+                <IoIosArrowForward
+                  size={20}
+                  className={`transition-transform duration-500 ${
+                    openSubMenuCountry && "rotate-90"
+                  }`}
+                />
+              </div>
+              {/* Sub menu */}
+              <ul
+                className={`${openSubMenuCountry ? "overflow-y-auto" : "overflow-y-hidden"} scrollbar-custom duration-500 ease-in-out ${
+                  openSubMenuCountry ? "max-h-52" : "max-h-0"
+                }`}
+              >
+                {countries && countries.length>0 &&
+                  countries?.map((genre) => (
+                    <li
+                      key={genre._id}
+                      className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60"
+                    >
+                      <span className="mr-1">&bull;</span>
+                      {genre.name}
+                    </li>
+                  ))}
+              </ul>
             </li>
             <li className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60">
               Chiếu rạp

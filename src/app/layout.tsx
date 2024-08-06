@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import MaxWithContainer from "@/components/MaxWithContainer";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
       <body className={`${inter.className} bg-black/90 text-white`}>
         <Header />
         <MaxWithContainer>{children}</MaxWithContainer>
+        <Footer />
       </body>
     </html>
   );

@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         primary: '#e4d804',
+        res:"#772727"
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -34,6 +35,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };
 export default config;
