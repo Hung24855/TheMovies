@@ -93,7 +93,7 @@ type MovieDetail = {
       origin_name: string;
       content: string;
       type: string;
-      status: string;
+      status: "completed"|"ongoing"|"trailer";
       thumb_url: string;
       poster_url: string;
       is_copyright: boolean;
@@ -124,6 +124,6 @@ type MovieDetail = {
           slug: string;
           link_embed: string;
         }[];
-      };
+      }[]
     };
 };

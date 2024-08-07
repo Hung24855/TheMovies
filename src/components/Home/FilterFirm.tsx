@@ -14,7 +14,7 @@ export default function FilterFirm() {
   };
 
   return (
-    <div className="mt-2 flex min-h-8 items-center md:gap-4 gap-2 rounded px-2 flex-wrap">
+    <div className="mt-2 hidden sm:flex min-h-8 items-center md:gap-4 gap-2 rounded px-2 flex-wrap">
       <div className="group relative z-10 cursor-pointer rounded bg-gray-800 px-2 py-1 font-light">
         <span>{selectedSort ?? "--Sắp xếp--"}</span>
         <div className="before-arrow before-arrow absolute left-1/2 top-full z-10 hidden min-h-14 w-max -translate-x-1/2 animate-fade-in-down rounded-sm bg-black/90 text-start group-hover:block">

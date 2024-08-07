@@ -2,6 +2,7 @@
 
 import React from "react";
 import { GiHamburgerMenu, IoMdClose, IoIosArrowForward } from "@/icons";
+import { useRouter } from "next/navigation";
 
 
 export default function SideBarMenu({ genres, countries }:{genres: Genres[]|null, countries: Country[]|null}) {
@@ -9,6 +10,7 @@ export default function SideBarMenu({ genres, countries }:{genres: Genres[]|null
   const [openSubMenuGenre, setopenSubMenuGenreGenre] = React.useState<boolean>(false);
   const [openSubMenuCountry, setopenSubMenuCountry] = React.useState<boolean>(false);
 
+  const router = useRouter()
 
 
   return (
@@ -29,8 +31,11 @@ export default function SideBarMenu({ genres, countries }:{genres: Genres[]|null
         <div className="text-center font-bold">THE MOVIES</div>
         <div className="mt-2 h-full text-left">
           <ul>
-            <li className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60">
-              Danh sách phim
+            <li className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60 font-semibold" onClick={() => {
+              setOpen(!open);
+              router.push("/")
+            }}>
+              Trang chủ
             </li>
             <li className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60">
               Phim bộ

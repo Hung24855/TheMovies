@@ -102,11 +102,11 @@ export default async function Header() {
           </div>
 
           {/* Search */}
-          <div className="flex items-center rounded bg-white px-1">
+          <div className="flex items-center  rounded bg-white px-1">
             <input
               type="text"
               placeholder="Tìm kiếm phim..."
-              className="px-2 py-1 text-black outline-none"
+              className="px-2 py-1 text-black outline-none w-[200px] md:w-auto"
             ></input>
 
             <FaSearch size={20} color="gray" className="cursor-pointer" />

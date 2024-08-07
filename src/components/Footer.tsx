@@ -8,8 +8,8 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <MaxWithContainer>
-      <div className="mt-10 flex h-20 w-full items-center justify-between border-t-[1px] border-gray-700 px-2 text-sm ">
-        <div className="flex gap-x-6">
+      <div className="mt-10 flex h-20 w-full items-center justify-between border-t-[1px] border-gray-700 px-2 text-sm flex-wrap">
+        <div className="flex gap-x-6 flex-wrap gap-1 ">
           <span>
             © {new Date().getFullYear()}. All Rights Reserved By :{" "}
             <span className="text-primary"> Nghiêm Hồng</span>
@@ -18,7 +18,7 @@ export default function Footer() {
           <span>Điều khoản</span>
           <span>Chính sách</span>
         </div>
-        <div className="flex items-center gap-x-4 ">
+        <div className="flex items-center gap-x-4 justify-center w-full md:w-max ">
           <Link href="https://github.com/Hung24855">
             <FaGithub size={20} className="cursor-pointer" />
           </Link>

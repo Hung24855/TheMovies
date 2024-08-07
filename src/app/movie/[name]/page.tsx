@@ -5,43 +5,80 @@ import {
   MdLocalMovies,
   IoEarth,
   IoLanguage,
+  CiShare2,
+  CiHeart,
 } from "@/icons";
 import usefetch from "@/hooks/useFetch";
+import Episodes from "@/components/movie/Episodes";
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
+
+// export const metadata: Metadata = {
+//   title: "...",
+//   description: "...",
+// };
+
+
 
 export default async function MoviePage({
   params,
+  searchParams,
 }: {
   params: { name: string };
+  searchParams: { tap: string };
 }) {
+  const { tap = "1" } = searchParams;
+
   const { data: movieDetail } = await usefetch<MovieDetail>(
     `/phim/${params.name}`,
   );
+  const { item, seoOnPage } = movieDetail ?? {};
+  const {
+    name,
+    actor = [],
+    episode_current,
+    quality,
+    year,
+    time,
+    lang,
+    episode_total,
+    status,
+    country = [],
+    content,
+    episodes = [],
+  } = item ?? {};
 
+  const { server_data: ListFirm } = episodes[0];
+
+  const srcIframe =
+    status !== "completed"
+      ? ListFirm.filter((firm) => firm.slug === tap)[0]?.link_embed
+      : ListFirm[0]?.link_embed;
+
+  if (!srcIframe && status !== "trailer") {
+    return notFound();
+  }
   return (
-    <div className="mt-2 min-h-screen bg-black p-2">
-      <div className="grid grid-cols-4 gap-x-5">
-        <div className="flex h-full items-center">
-          <img src={movieDetail?.seoOnPage.seoSchema.image} alt="img" />
+    <div className=" min-h-screen p-2">
+      {/* Thông tin phim */}
+      <div className="grid grid-cols-4 gap-x-5 bg-black/90 p-2">
+        <div className="col-span-4 flex h-full items-center justify-center md:col-span-1">
+          <img
+            src={movieDetail?.seoOnPage.seoSchema.image}
+            alt="img"
+            className="h-full w-1/2 rounded object-cover md:w-full"
+          />
         </div>
         {/* Content */}
-        <div className="col-span-3 space-y-4 py-12">
-          <h1 className="text-[45px] font-semibold">
-            {movieDetail?.item.name}
-          </h1>
+        <div className="col-span-4 space-y-3 py-2 md:col-span-3">
+          <h1 className="md:text-[40px] text-[26px] font-semibold">{name}</h1>
           <h4 className="font-semibold">
-            Diễn viên :{" "}
-            <span className="text-primary">
-              {movieDetail?.item.actor.join(", ")}
-            </span>
+            Diễn viên : <span className="text-primary">{actor.join(", ")}</span>
           </h4>
 
-          <div className="flex items-center gap-x-4">
-            <div className="rounded px-2 py-1 ring-1">
-              {movieDetail?.item.episode_current}
-            </div>
-            <div className="rounded px-2 py-1 ring-1">
-              {movieDetail?.item.quality}
-            </div>
+          <div className="flex items-center gap-x-4 flex-wrap gap-y-2">
+            <div className="rounded px-2 py-1 ring-1">{episode_current}</div>
+            <div className="rounded px-2 py-1 ring-1">{quality}</div>
             <span>
               {movieDetail?.item.category
                 .map((category) => category.name)
@@ -55,18 +92,18 @@ export default async function MoviePage({
                 className="mr-2 inline-block text-primary"
                 size={20}
               />
-              {movieDetail?.item.year}
+              {year}
             </span>
             <span className="flex items-center">
               <IoMdTime className="mr-2 inline-block text-primary" size={20} />
-              {movieDetail?.item.time}
+              {time}
             </span>
             <span className="flex items-center">
               <IoLanguage
                 className="mr-2 inline-block text-primary"
                 size={20}
               />
-              {movieDetail?.item.lang}
+              {lang}
             </span>
           </div>
 
@@ -76,28 +113,58 @@ export default async function MoviePage({
                 className="mr-2 inline-block text-primary"
                 size={20}
               />
-              11/12 Tập
+              {status === "ongoing"
+                ? `${episode_current} / ${episode_total}`
+                : `${episode_total} / ${episode_total} Tập`}
             </span>
             <span className="flex items-center">
               <IoEarth className="mr-2 inline-block text-primary" size={20} />
-              {movieDetail?.item.country[0].name}
+              {country[0].name}
             </span>
           </div>
           <span
-            className="mt-5 inline-block"
+            className="mt-5 inline-block text-sm"
             dangerouslySetInnerHTML={{
-              __html: movieDetail?.item.content ?? "",
+              __html: content ?? "",
             }}
           />
+
+          <div className="flex w-full md:w-max items-center justify-center gap-x-2 md:gap-x-6 rounded-lg bg-[#191919] md:px-8 px-4 py-4 text-black">
+            <div className="flex flex-col items-center gap-1">
+              <CiShare2 size={20} color="white" />
+              <span className="text-white">Share</span>
+            </div>
+            <button className="rounded-2xl border-2 border-primary bg-primary px-4 py-2">
+              {status !== "trailer" ? <a href="#video">Xem</a> : "Trailer"}
+            </button>
+            <div className="flex items-center justify-center gap-x-2 rounded-2xl border-2 border-primary px-4 py-2 text-white">
+              <CiHeart size={20} />
+              <span>Yêu thích</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Video */}
-      <div className="mt-10">
-        <video width="100%" controls>
-          <source src={"https://vip.opstream13.com/share/a35fe7f7fe8217b4369a0af4244d1fca"} type="video/mp4" />
-        </video>
-      </div>
+      {/* Phát video */}
+      {status !== "trailer" && (
+        <>
+          <div
+            className="mb-8 mt-8 bg-gray-500/70 md:mb-20 md:mt-24"
+            id="video"
+          >
+            <iframe
+              src={srcIframe}
+              width="100%"
+              className="aspect-video h-[200px] w-full overflow-hidden rounded-md bg-stone-900 md:h-auto"
+              allowFullScreen
+              referrerPolicy="no-referrer"
+            ></iframe>
+          </div>
+          {/* Chọn tập phim */}
+          <p>{episodes[0].server_name}</p>
+          <Episodes ListFirm={ListFirm} initEpisode={tap} />
+        </>
+      )}
     </div>
   );
 }

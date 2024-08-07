@@ -1,16 +1,19 @@
 "use client";
 
-import { getFirmByPage } from "@/actions";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Pagination = ({
+  initPage = 1,
   totalPage,
 }: {
   totalPage: number;
+  initPage:number
 }) => {
-  const [pageActive, setPageActive] = useState<number>(1);
+  const [pageActive, setPageActive] = useState<number>(()=>initPage);
   const router = useRouter();
+
 
   /*Xử lý chọn trang*/
   const handleSelectPage = (pageNumber: number) => {
@@ -36,13 +39,13 @@ const Pagination = ({
 
   const renderPageNumbers = () => {
     const pages = [];
-    const maxPagesToShow = 5; // Số lượng trang lân cận hiện tại hiển thị
-    const halfPagesToShow = Math.floor(maxPagesToShow / 2); //Đây là một biến trung gian để tính toán khoảng cách từ trang hiện tại đến các trang lân cận.
+    const maxPagesToShow = 3; // Số lượng trang lân cận hiện tại hiển thị
+    const halfPagesToShow = Math.floor(maxPagesToShow / 2); //Biến trung gian để tính toán khoảng cách từ trang hiện tại đến các trang lân cận.
 
     // Luôn hiển thị trang đầu tiên
     pages.push(
       <span
-        className={`mx-1 cursor-pointer rounded border border-white px-2 py-1 w-56`}
+        className={`mx-1 cursor-pointer rounded border px-2 py-1 md:px-4 md:py-2 ${pageActive === 1 && "bg-blue-500 text-white ring-1"}`}
         key={1}
         onClick={() => handleSelectPage(1)}
       >
@@ -65,7 +68,7 @@ const Pagination = ({
     for (let i = startPage; i <= endPage; i++) {
       pages.push(
         <span
-          className={`mx-1 cursor-pointer rounded border border-primary px-2 py-1 ${pageActive === i && "bg-blue-500 text-red-500"}`}
+          className={`mx-1 cursor-pointer rounded border px-2 py-1 md:px-4 md:py-2 ${pageActive === i && "bg-blue-500 text-white ring-1"}`}
           key={i}
           onClick={() => handleSelectPage(i)}
         >
@@ -87,7 +90,7 @@ const Pagination = ({
     if (totalPage > 1) {
       pages.push(
         <span
-          className={`mx-1 cursor-pointer border border-primary px-2 py-1 ${pageActive === totalPage && "bg-primary text-white"}`}
+          className={`mx-1 cursor-pointer rounded border px-2 py-1 md:px-4 md:py-2 ${pageActive === totalPage && "bg-blue-500 text-white ring-1"}`}
           key={totalPage}
           onClick={() => handleSelectPage(totalPage)}
         >
@@ -102,14 +105,14 @@ const Pagination = ({
   return (
     <div>
       <span
-        className={`mx-1 ${pageActive > 1 ? "cursor-pointer" : "cursor-default opacity-40"} rounded border border-primary px-2 py-1`}
+        className={`mx-1 md:px-4 md:py-2 ${pageActive > 1 ? "cursor-pointer" : "cursor-default opacity-40"} rounded border px-2 py-1`}
         onClick={handlePrevPage}
       >
         &lt;
       </span>
       {renderPageNumbers()}
       <span
-        className={`mx-1 ${pageActive !== totalPage ? "cursor-pointer" : "cursor-default opacity-40"} rounded border border-primary px-2 py-1`}
+        className={`mx-1 md:px-4 md:py-2 ${pageActive !== totalPage ? "cursor-pointer" : "cursor-default opacity-40"} rounded border px-2 py-1`}
         onClick={handleNextPage}
       >
         &gt;

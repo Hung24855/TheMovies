@@ -11,8 +11,8 @@
 }
 
 body::-webkit-scrollbar {
-  width: 3px;
-  border-radius: 2px;
+  width: 6px;
+  border-radius: 4px;
   background-color: transparent;
 }
 
@@ -21,7 +21,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .scrollbar-custom::-webkit-scrollbar {
-  width: 3px;
+  width: 4px;
   border-radius: 2px;
   background-color: transparent;
 }
