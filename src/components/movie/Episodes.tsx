@@ -15,7 +15,6 @@ export default function Episodes({ ListFirm,initEpisode }: { ListFirm: ListFirm[
   const router = useRouter();
 
   
-  
   return (
     <div className="mt-4 grid grid-cols-4 gap-2 bg-black p-2 md:grid-cols-8 lg:grid-cols-12">
       {ListFirm.map((firm,index) => {
@@ -27,8 +26,10 @@ export default function Episodes({ ListFirm,initEpisode }: { ListFirm: ListFirm[
             )}
             key={firm.name}
             onClick={() => {
-              setEpisode(Number(firm.slug));
-              router.push(`?tap=${firm.slug}`, { scroll: false });
+              if(Episode !== Number(firm.slug)){
+                setEpisode(Number(firm.slug));
+                router.push(`?tap=${firm.slug}`, { scroll: false });
+              }
             }}
           >
             {firm.name }

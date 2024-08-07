@@ -1,29 +1,38 @@
-import Pagination from '@/base/libs/Pagination';
-import Breadcrumb from '@/components/Breadcrumb';
-import ListFirm from '@/components/home/ListFirm';
-import usefetch from '@/hooks/useFetch';
-import { notFound } from 'next/navigation';
-import React, { Fragment } from 'react'
+import React, { Fragment } from "react";
+import { movieTypes } from "./constants";
+import { notFound } from "next/navigation";
+import usefetch from "@/hooks/useFetch";
+import ListFirm from "@/components/home/ListFirm";
+import Breadcrumb from "@/components/Breadcrumb";
+import Pagination from "@/base/libs/Pagination";
 
 type MovieTypeProps = {
-  params: { slug: string };
+  params: { typeParam: string };
   searchParams: {
     page: number;
     q: string;
   };
 };
 
-export default async function GenresPage({ searchParams,params }: MovieTypeProps) {
+export default async function SearchPage({
+  params,
+  searchParams,
+}: MovieTypeProps) {
+  const { typeParam } = params;
+  const { page = "1", q = "" } = searchParams;
+
+  const type = movieTypes.find((item) => item.path === typeParam);
+  if (!type) return notFound();
+
   const { data } = await usefetch<ResponseMovies>(
-    `/the-loai/${params.slug}?page=${searchParams.page}&sort_field=year`,
+    type.path === "tim-kiem"
+      ? `/tim-kiem?keyword=${q}&page=${page}`
+      : `/danh-sach/${type.path}?&page=${page}&sort_field=year`,
   );
 
-  if (!data) {
-    return notFound();
-  }
-
-  const {titlePage} = data
-
+ 
+  
+  if (!data) return notFound();
 
   const { items: dataFirm = [], params: paramsMovie } = data;
 
@@ -35,13 +44,14 @@ export default async function GenresPage({ searchParams,params }: MovieTypeProps
   if (searchParams.page > totalpage) {
     return notFound();
   }
+
   return (
     <Fragment>
       <div className="mt-2">
         <Breadcrumb />
       </div>
-      <div className="mt-2 min-h-screen bg-black p-2">
-        <h1 className="text-3xl font-medium">Phim {titlePage.toLowerCase()}</h1>
+      <div className="mt-2 min-h-screen w-full bg-black/90 p-2">
+        <h1 className="text-3xl font-medium">{type.title}</h1>
         {dataFirm.length > 0 ? (
           <Fragment>
             <div className="mt-2 grid grid-cols-2 gap-2 pb-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">

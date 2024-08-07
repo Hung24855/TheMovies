@@ -18,7 +18,7 @@ type ResponseCountries = {
   items: Country[];
 };
 
-type ResponseNewMovies = {
+type ResponseMovies = {
   seoOnPage: {
     titleHead: string;
     descriptionHead: string;
@@ -127,3 +127,9 @@ type MovieDetail = {
       }[]
     };
 };
+
+
+type MovieType = {
+  path: string;
+  title: string;
+}

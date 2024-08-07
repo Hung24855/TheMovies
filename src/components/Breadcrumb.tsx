@@ -4,7 +4,6 @@ import React from "react";
 const Breadcrumbs = [
   { id: 1, name: "Trang chủ" },
   { id: 2, name: "Phim bộ" },
-  { id: 3, name: "Nhất niệm vĩnh hằng" },
 ];
 
 export default function Breadcrumb() {

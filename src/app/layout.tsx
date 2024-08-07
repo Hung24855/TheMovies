@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import MaxWithContainer from "@/components/MaxWithContainer";
-import Footer from "@/components/Footer";
+import Header from "@/components/layout/Header";
+import MaxWithContainer from "@/components/layout/MaxWithContainer";
+import Footer from "@/components/layout/Footer";
+import ProvidersProgesbar from "@/base/libs/Progesbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,9 +24,11 @@ export default function RootLayout({
         <link rel="icon" href="/logo-white.png" sizes="any" />
       </head>
       <body className={`${inter.className} bg-black/90 text-white`}>
-        <Header />
-        <MaxWithContainer>{children}</MaxWithContainer>
-        <Footer />
+        <ProvidersProgesbar>
+          <Header />
+          <MaxWithContainer>{children}</MaxWithContainer>
+          <Footer />
+        </ProvidersProgesbar>
       </body>
     </html>
   );

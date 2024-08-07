@@ -5,13 +5,20 @@ import { GiHamburgerMenu, IoMdClose, IoIosArrowForward } from "@/icons";
 import { useRouter } from "next/navigation";
 
 
-export default function SideBarMenu({ genres, countries }:{genres: Genres[]|null, countries: Country[]|null}) {
+export default function SideBarMenu({
+  genres,
+  countries,
+}: {
+  genres: Genres[] | null;
+  countries: Country[] | null;
+}) {
   const [open, setOpen] = React.useState<boolean>(false);
-  const [openSubMenuGenre, setopenSubMenuGenreGenre] = React.useState<boolean>(false);
-  const [openSubMenuCountry, setopenSubMenuCountry] = React.useState<boolean>(false);
+  const [openSubMenuGenre, setopenSubMenuGenreGenre] =
+    React.useState<boolean>(false);
+  const [openSubMenuCountry, setopenSubMenuCountry] =
+    React.useState<boolean>(false);
 
-  const router = useRouter()
-
+  const router = useRouter();
 
   return (
     <div className="md:hidden">
@@ -31,16 +38,31 @@ export default function SideBarMenu({ genres, countries }:{genres: Genres[]|null
         <div className="text-center font-bold">THE MOVIES</div>
         <div className="mt-2 h-full text-left">
           <ul>
-            <li className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60 font-semibold" onClick={() => {
-              setOpen(!open);
-              router.push("/")
-            }}>
+            <li
+              className="flex cursor-pointer items-center rounded py-3 pl-1 font-semibold hover:bg-slate-100/60"
+              onClick={() => {
+                setOpen(!open);
+                router.push("/");
+              }}
+            >
               Trang chủ
             </li>
-            <li className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60">
+            <li
+              className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60"
+              onClick={() => {
+                setOpen(!open);
+                router.push("/phim-bo");
+              }}
+            >
               Phim bộ
             </li>
-            <li className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60">
+            <li
+              className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60"
+              onClick={() => {
+                setOpen(!open);
+                router.push("/phim-le");
+              }}
+            >
               Phim lẻ
             </li>
             <li>
@@ -62,11 +84,16 @@ export default function SideBarMenu({ genres, countries }:{genres: Genres[]|null
                   openSubMenuGenre ? "max-h-52" : "max-h-0"
                 }`}
               >
-                {genres && genres.length>0 &&
+                {genres &&
+                  genres.length > 0 &&
                   genres?.map((genre) => (
                     <li
-                      key={genre._id}
                       className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60"
+                      key={genre._id}
+                      onClick={() => {
+                        setOpen(!open);
+                        router.push(`/genres/${genre.slug}`);
+                      }}
                     >
                       <span className="mr-1">&bull;</span>
                       {genre.name}
@@ -93,20 +120,25 @@ export default function SideBarMenu({ genres, countries }:{genres: Genres[]|null
                   openSubMenuCountry ? "max-h-52" : "max-h-0"
                 }`}
               >
-                {countries && countries.length>0 &&
-                  countries?.map((genre) => (
+                {countries &&
+                  countries.length > 0 &&
+                  countries?.map((country) => (
                     <li
-                      key={genre._id}
                       className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60"
+                      key={country._id}
+                      onClick={() => {
+                        setOpen(!open);
+                        router.push(`/country/${country.slug}`);
+                      }}
                     >
                       <span className="mr-1">&bull;</span>
-                      {genre.name}
+                      {country.name}
                     </li>
                   ))}
               </ul>
             </li>
             <li className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60">
-              Chiếu rạp
+              Sắp chiếu
             </li>
           </ul>
         </div>

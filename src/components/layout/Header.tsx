@@ -1,21 +1,24 @@
 import Link from "next/link";
 import MaxWithContainer from "./MaxWithContainer";
-
-import {IoMdArrowDropdown,FaSearch} from "../icons";
-import SideBarMenu from "./SideBarMenu";
+import { IoMdArrowDropdown } from "../../icons";
+import SideBarMenu from "../SideBarMenu";
 import usefetch from "@/hooks/useFetch";
+import Search from "../Search";
 
 export default async function Header() {
   const { data: genres } = await usefetch<ResponseGenres>("/the-loai");
-  const { data: countries } = await usefetch<ResponseCountries>("/the-loai");
+  const { data: countries } = await usefetch<ResponseCountries>("/quoc-gia");
 
   return (
-    <nav className="sticky inset-x-0 top-0 z-50 h-14 gap-x-2 bg-black/60  backdrop-blur-lg ">
+    <nav className="sticky inset-x-0 top-0 z-50 h-14 gap-x-2 bg-black/60 backdrop-blur-lg">
       <MaxWithContainer>
         <div className="flex h-full w-full items-center justify-between px-2">
           <div className="flex h-full items-center">
             {/* Menu button */}
-            <SideBarMenu genres={genres?.items??null} countries={countries?.items??null} />
+            <SideBarMenu
+              genres={genres?.items ?? null}
+              countries={countries?.items ?? null}
+            />
             {/* Logo */}
             <img
               src="/logo.png"
@@ -35,13 +38,13 @@ export default async function Header() {
                 Trang chủ
               </Link>
               <Link
-                href="/"
+                href="/phim-le"
                 className="flex h-full items-center hover:text-primary"
               >
                 Phim lẻ
               </Link>
               <Link
-                href="/"
+                href="/phim-bo"
                 className="flex h-full items-center hover:text-primary"
               >
                 Phim bộ
@@ -60,12 +63,11 @@ export default async function Header() {
                     {genres &&
                       genres.items.length > 0 &&
                       genres.items.map((genre: Genres) => (
-                        <div
-                          key={genre._id}
-                          className="whitespace-nowrap hover:text-primary"
-                        >
-                          {genre.name}
-                        </div>
+                        <Link key={genre._id} href={`/genres/${genre.slug}`}>
+                          <div className="whitespace-nowrap hover:text-primary">
+                            {genre.name}
+                          </div>
+                        </Link>
                       ))}
                   </div>
                 </div>
@@ -81,13 +83,15 @@ export default async function Header() {
                   <div className="grid w-max grid-cols-2 gap-x-5 gap-y-2 text-start md:grid-cols-3 lg:grid-cols-4">
                     {countries &&
                       countries.items.length > 0 &&
-                      countries.items.map((genre: Genres) => (
-                        <div
-                          key={genre._id}
-                          className="whitespace-nowrap hover:text-primary"
+                      countries.items.map((country: Country) => (
+                        <Link
+                          key={country._id}
+                          href={`/country/${country.slug}`}
                         >
-                          {genre.name}
-                        </div>
+                          <div className="whitespace-nowrap hover:text-primary">
+                            {country.name}
+                          </div>
+                        </Link>
                       ))}
                   </div>
                 </div>
@@ -96,21 +100,13 @@ export default async function Header() {
                 href="/"
                 className="flex h-full items-center hover:text-primary"
               >
-                Chiếu rạp
+                Sắp chiếu
               </Link>
             </div>
           </div>
 
           {/* Search */}
-          <div className="flex items-center  rounded bg-white px-1">
-            <input
-              type="text"
-              placeholder="Tìm kiếm phim..."
-              className="px-2 py-1 text-black outline-none w-[200px] md:w-auto"
-            ></input>
-
-            <FaSearch size={20} color="gray" className="cursor-pointer" />
-          </div>
+          <Search />
         </div>
       </MaxWithContainer>
     </nav>

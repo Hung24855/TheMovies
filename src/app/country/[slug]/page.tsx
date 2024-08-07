@@ -1,9 +1,9 @@
-import Pagination from '@/base/libs/Pagination';
-import Breadcrumb from '@/components/Breadcrumb';
-import ListFirm from '@/components/home/ListFirm';
-import usefetch from '@/hooks/useFetch';
-import { notFound } from 'next/navigation';
-import React, { Fragment } from 'react'
+import Pagination from "@/base/libs/Pagination";
+import Breadcrumb from "@/components/Breadcrumb";
+import ListFirm from "@/components/home/ListFirm";
+import usefetch from "@/hooks/useFetch";
+import { notFound } from "next/navigation";
+import React, { Fragment } from "react";
 
 type MovieTypeProps = {
   params: { slug: string };
@@ -13,17 +13,19 @@ type MovieTypeProps = {
   };
 };
 
-export default async function GenresPage({ searchParams,params }: MovieTypeProps) {
+export default async function CountryPage({
+  searchParams,
+  params,
+}: MovieTypeProps) {
   const { data } = await usefetch<ResponseMovies>(
-    `/the-loai/${params.slug}?page=${searchParams.page}&sort_field=year`,
+    `/quoc-gia/${params.slug}?page=${searchParams.page}&sort_field=year`,
   );
 
   if (!data) {
     return notFound();
   }
 
-  const {titlePage} = data
-
+  const { titlePage } = data;
 
   const { items: dataFirm = [], params: paramsMovie } = data;
 
@@ -41,7 +43,7 @@ export default async function GenresPage({ searchParams,params }: MovieTypeProps
         <Breadcrumb />
       </div>
       <div className="mt-2 min-h-screen bg-black p-2">
-        <h1 className="text-3xl font-medium">Phim {titlePage.toLowerCase()}</h1>
+        <h1 className="text-3xl font-medium">Phim {titlePage}</h1>
         {dataFirm.length > 0 ? (
           <Fragment>
             <div className="mt-2 grid grid-cols-2 gap-2 pb-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">

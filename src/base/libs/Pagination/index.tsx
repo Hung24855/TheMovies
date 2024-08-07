@@ -27,6 +27,7 @@ const Pagination = ({
     if (pageActive > 1) {
       const newPageActive = pageActive - 1;
       setPageActive(newPageActive);
+      router.push(`?page=${newPageActive}`);
     }
   };
 
@@ -34,6 +35,7 @@ const Pagination = ({
     if (pageActive < totalPage) {
       const newPageActive = pageActive + 1;
       setPageActive(newPageActive);
+      router.push(`?page=${newPageActive}`);
     }
   };
 
