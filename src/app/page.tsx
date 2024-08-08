@@ -23,7 +23,7 @@ export default async function Home({ searchParams }: MovieContext) {
       category && `&category=${category}`,
       sort_type && `&sort_type=${sort_type}`,
       country && `&country=${country}`,
-      sort_field==="name"
+      sort_field === "name"
         ? `&sort_field=${sort_field}&sort_type=asc`
         : "&sort_field=year",
     ).replace(/\s+/g, ""),
@@ -31,11 +31,12 @@ export default async function Home({ searchParams }: MovieContext) {
 
   //Phải replace khoảng trắng vì clsxx sẽ tạo ra khoảng trắng => Gây k get được data từ API
 
- 
-  const { data: genres } = await usefetch<ResponseGenres>("/the-loai");
-  const { data: countries } = await usefetch<ResponseCountries>("/quoc-gia");
-
-  
+  const [theloai, quocgia] = await Promise.all([
+    usefetch<ResponseGenres>("/the-loai"),
+    usefetch<ResponseCountries>("/quoc-gia"),
+  ]);
+  const { data: genres } = theloai;
+  const { data: countries } = quocgia;
 
   if (!data) {
     return notFound();
@@ -51,7 +52,6 @@ export default async function Home({ searchParams }: MovieContext) {
   if (Number(page) > totalpage) {
     return notFound();
   }
-
 
   return (
     <div className="mt-2 grid grid-cols-8 gap-x-2">
@@ -69,17 +69,14 @@ export default async function Home({ searchParams }: MovieContext) {
           </div>
         </div>
         {/* Phân trang */}
-        {pagination && totalpage > 1  &&(
+        {pagination && totalpage > 1 && (
           <div className="flex items-center justify-center bg-black pb-10 pt-16">
-            <Pagination
-              totalPage={totalpage}
-              initPage={Number(page)}
-            /> 
+            <Pagination totalPage={totalpage} initPage={Number(page)} />
           </div>
         )}
       </div>
       {/* Phim noi bat */}
-      <div className="z-10 col-span-full mt-4 min-h-screen rounded bg-black pt-2 md:mt-0 lg:col-span-2 px-2">
+      <div className="z-10 col-span-full mt-4 min-h-screen rounded bg-black px-2 pt-2 md:mt-0 lg:col-span-2">
         <h1 className="text-center">PHIM NỔI BẬT</h1>
         <FeaturedMovies />
       </div>

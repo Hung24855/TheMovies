@@ -1,7 +1,6 @@
 // Phim nổi bật
 
 import usefetch from "@/hooks/useFetch";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 

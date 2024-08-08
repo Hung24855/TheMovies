@@ -4,9 +4,30 @@ import FilterFirm from "@/components/shared/FilterFirm";
 import ListFirm from "@/components/shared/ListFirm";
 import usefetch from "@/hooks/useFetch";
 import clsx from "clsx";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import React, { Fragment } from "react";
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const { data: movieDetail } = await usefetch<MovieDetail>(
+    `/quoc-gia/${params.slug}`,
+  );
 
+  if (!movieDetail) {
+    return {
+      title: "Not found",
+    };
+  }
+
+  const { titleHead } = movieDetail.seoOnPage;
+
+  return {
+    title: titleHead,
+  };
+}
 
 
 export default async function CountryPage({ searchParams, params }: MovieContext) {
@@ -56,8 +77,12 @@ export default async function CountryPage({ searchParams, params }: MovieContext
     return notFound();
   }
 
-   const { data: genres } = await usefetch<ResponseGenres>("/the-loai");
-   const { data: countries } = await usefetch<ResponseCountries>("/quoc-gia");
+   const [theloai, quocgia] = await Promise.all([
+     usefetch<ResponseGenres>("/the-loai"),
+     usefetch<ResponseCountries>("/quoc-gia"),
+   ]);
+   const { data: genres } = theloai;
+   const { data: countries } = quocgia;
 
   return (
     <Fragment>

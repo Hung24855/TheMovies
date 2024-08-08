@@ -7,6 +7,27 @@ import Breadcrumb from "@/components/shared/Breadcrumb";
 import Pagination from "@/base/libs/Pagination";
 import clsx from "clsx";
 import FilterFirm from "@/components/shared/FilterFirm";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: MovieContext): Promise<Metadata> {
+  const { typeParam } = params;
+  const type = movieTypes.find((item) => item.path === typeParam);
+
+  if (!type) {
+    return {
+      title: "Not found",
+    };
+  }
+
+  
+
+  return {
+    title: type.title,
+  };
+}
 
 export default async function SearchPage({
   params,
@@ -62,8 +83,12 @@ export default async function SearchPage({
     return notFound();
   }
 
-  const { data: genres } = await usefetch<ResponseGenres>("/the-loai");
-  const { data: countries } = await usefetch<ResponseCountries>("/quoc-gia");
+  const [theloai, quocgia] = await Promise.all([
+    usefetch<ResponseGenres>("/the-loai"),
+    usefetch<ResponseCountries>("/quoc-gia"),
+  ]);
+  const { data: genres } = theloai;
+  const { data: countries } = quocgia;
 
   return (
     <Fragment>

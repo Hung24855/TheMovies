@@ -21,7 +21,7 @@ export default async function Header() {
             />
             {/* Logo */}
             <img
-              src="/logo.png"
+              src="/Logo.png"
               alt="Logo"
               style={{
                 width: "50px",

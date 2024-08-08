@@ -13,10 +13,27 @@ import Episodes from "@/components/movie/Episodes";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
-// export const metadata: Metadata = {
-//   title: "...",
-//   description: "...",
-// };
+export async function generateMetadata({
+  params,
+}: {
+  params: { name: string };
+}): Promise<Metadata> {
+const { data: movieDetail } = await usefetch<MovieDetail>(
+  `/phim/${params.name}`,
+);
+
+if(!movieDetail) {
+  return {
+    title:"Not found"
+  }
+}
+
+const {titleHead} = movieDetail.seoOnPage
+
+  return {
+    title: titleHead,
+  };
+}
 
 export default async function MoviePage({
   params,
