@@ -98,8 +98,8 @@ export default async function SearchPage({
       <div className="mt-2 min-h-screen w-full bg-black/90 pt-2">
         <h1 className="ml-2 font-bold">{type.title.toUpperCase()}</h1>
         <FilterFirm
-          genres={genres?.items ?? null}
-          countries={countries?.items ?? null}
+          genres={genres?.items }
+          countries={countries?.items }
         />
         {dataFirm.length > 0 ? (
           <Fragment>

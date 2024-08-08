@@ -59,10 +59,7 @@ export default async function Home({ searchParams }: MovieContext) {
         {/* Danh sách phim */}
         <div className="z-10 mt-2 min-h-screen rounded">
           <h1 className="ml-2 font-bold">PHIM MỚI CẬP NHẬT</h1>
-          <FilterFirm
-            genres={genres?.items ?? null}
-            countries={countries?.items ?? null}
-          />
+          <FilterFirm genres={genres?.items} countries={countries?.items} />
           {/* Danh sách phim */}
           <div className="mt-2 grid grid-cols-2 gap-2 px-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             <ListFirm dataFirm={dataFirm} />

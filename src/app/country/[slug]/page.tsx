@@ -94,8 +94,8 @@ export default async function CountryPage({ searchParams, params }: MovieContext
           {`PHIM ${titlePage}`.toUpperCase()}
         </h1>
         <FilterFirm
-          genres={genres?.items ?? null}
-          countries={countries?.items ?? null}
+          genres={genres?.items }
+          countries={countries?.items}
         />
         {dataFirm.length > 0 ? (
           <Fragment>

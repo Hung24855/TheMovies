@@ -91,8 +91,8 @@ const {
       <div className="mt-2 min-h-screen bg-black pt-2">
         <h1 className="ml-2 font-bold">{`PHIM ${titlePage}`.toUpperCase()}</h1>
         <FilterFirm
-          genres={genres?.items ?? null}
-          countries={countries?.items ?? null}
+          genres={genres?.items }
+          countries={countries?.items }
         />
         {dataFirm.length > 0 ? (
           <Fragment>
