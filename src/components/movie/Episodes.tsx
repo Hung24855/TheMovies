@@ -21,18 +21,19 @@ export default function Episodes({ ListFirm,initEpisode }: { ListFirm: ListFirm[
         return (
           <button
             className={clsx(
-              "rounded bg-[#191919] px-10 py-2 hover:bg-primary hover:text-black",
+              "rounded bg-[#191919] px-2 py-2 text-center hover:bg-primary hover:text-black md:px-10",
               Episode === Number(firm.slug) && "bg-primary text-black",
+              firm.slug.toLowerCase() === "full" && "bg-primary text-black",
             )}
             key={firm.name}
             onClick={() => {
-              if(Episode !== Number(firm.slug)){
+              if (Episode !== Number(firm.slug)) {
                 setEpisode(Number(firm.slug));
                 router.push(`?tap=${firm.slug}`, { scroll: false });
               }
             }}
           >
-            {firm.name }
+            {firm.name}
           </button>
         );
       })}

@@ -74,62 +74,76 @@ type MovieDetail = {
       name: string;
     };
     descriptionHead: string;
-    
   };
   item: {
-      tmdb: {
-        type: string;
-        id: string;
-        season: number | null;
-        vote_average: number;
-        vote_count: number;
-      };
-      modified: {
-        time: Date;
-      };
-      _id: string;
+    tmdb: {
+      type: string;
+      id: string;
+      season: number | null;
+      vote_average: number;
+      vote_count: number;
+    };
+    modified: {
+      time: Date;
+    };
+    _id: string;
+    name: string;
+    slug: string;
+    origin_name: string;
+    content: string;
+    type: string;
+    status: "completed" | "ongoing" | "trailer";
+    thumb_url: string;
+    poster_url: string;
+    is_copyright: boolean;
+    sub_docquyen: boolean;
+    chieurap: boolean;
+    trailer_url: string;
+    time: string;
+    episode_current: string;
+    episode_total: string;
+    quality: string;
+    lang: string;
+    year: number;
+    view: number;
+    actor: string[];
+    director: string[];
+    category: {
+      id: string;
       name: string;
       slug: string;
-      origin_name: string;
-      content: string;
-      type: string;
-      status: "completed"|"ongoing"|"trailer";
-      thumb_url: string;
-      poster_url: string;
-      is_copyright: boolean;
-      sub_docquyen: boolean;
-      chieurap: boolean;
-      trailer_url: string;
-      time: string;
-      episode_current: string;
-      episode_total: string;
-      quality: string;
-      lang: string;
-      year: number;
-      view: number;
-      actor: string[];
-      director: string[];
-      category :{
-        id: string,
-          name: string,
-          slug: string
-      }[];
-      country: {
+    }[];
+    country: {
+      name: string;
+    }[];
+    episodes: {
+      server_name: string;
+      server_data: {
         name: string;
+        slug: string;
+        link_embed: string;
       }[];
-      episodes: {
-        server_name: string;
-        server_data: {
-          name: string;
-          slug: string;
-          link_embed: string;
-        }[];
-      }[]
-    };
+    }[];
+  };
 };
-
 
 type MovieType = {
   path: string;
   title: string;
-}
+};
+
+type MovieContext = {
+  params: {
+    typeParam?: string;
+    slug?: string;
+  };
+  searchParams: {
+    page?: number;
+    q?: string;
+    sort_field?: string;
+    sort_type?: string;
+    country?: string;
+    category?: string;
+    year?: string;
+  };
+};

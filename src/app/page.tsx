@@ -1,19 +1,41 @@
 import Pagination from "@/base/libs/Pagination";
-
 import FeaturedMovies from "@/components/home/FeaturedMovies";
-import FilterFirm from "@/components/home/FilterFirm";
-import ListFirm from "@/components/home/ListFirm";
+import FilterFirm from "@/components/shared/FilterFirm";
+import ListFirm from "@/components/shared/ListFirm";
 import usefetch from "@/hooks/useFetch";
+import clsx from "clsx";
 import { notFound } from "next/navigation";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: { page: number };
-}) {
+export default async function Home({ searchParams }: MovieContext) {
+  const {
+    page = "1",
+    category,
+    year,
+    sort_type,
+    country,
+    sort_field,
+  } = searchParams;
+
   const { data } = await usefetch<ResponseMovies>(
-    `/danh-sach/phim-moi-cap-nhat?page=${searchParams.page}&sort_field=year`,
+    clsx(
+      `/danh-sach/phim-moi-cap-nhat?page=${page}`,
+      year && `&year=${year}`,
+      category && `&category=${category}`,
+      sort_type && `&sort_type=${sort_type}`,
+      country && `&country=${country}`,
+      sort_field==="name"
+        ? `&sort_field=${sort_field}&sort_type=asc`
+        : "&sort_field=year",
+    ).replace(/\s+/g, ""),
   );
+
+  //Phải replace khoảng trắng vì clsxx sẽ tạo ra khoảng trắng => Gây k get được data từ API
+
+ 
+  const { data: genres } = await usefetch<ResponseGenres>("/the-loai");
+  const { data: countries } = await usefetch<ResponseCountries>("/quoc-gia");
+
+  
 
   if (!data) {
     return notFound();
@@ -21,37 +43,43 @@ export default async function Home({
 
   const { items: dataFirm = [], params } = data;
   const { pagination } = params;
-  const totalpage = pagination
-    ? Math.floor(pagination.totalItems / pagination.totalItemsPerPage)
-    : 0;
+  const totalpage =
+    pagination && pagination.totalItems > pagination.totalItemsPerPage
+      ? Math.floor(pagination.totalItems / pagination.totalItemsPerPage)
+      : 1;
 
-  if (searchParams.page > totalpage) {
+  if (Number(page) > totalpage) {
     return notFound();
   }
+
+
   return (
     <div className="mt-2 grid grid-cols-8 gap-x-2">
       <div className="col-span-full bg-black lg:col-span-6">
         {/* Danh sách phim */}
         <div className="z-10 mt-2 min-h-screen rounded">
           <h1 className="ml-2 font-bold">PHIM MỚI CẬP NHẬT</h1>
-          <FilterFirm />
+          <FilterFirm
+            genres={genres?.items ?? null}
+            countries={countries?.items ?? null}
+          />
           {/* Danh sách phim */}
           <div className="mt-2 grid grid-cols-2 gap-2 px-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             <ListFirm dataFirm={dataFirm} />
           </div>
         </div>
         {/* Phân trang */}
-        {pagination && (
+        {pagination && totalpage > 1  &&(
           <div className="flex items-center justify-center bg-black pb-10 pt-16">
             <Pagination
               totalPage={totalpage}
-              initPage={searchParams.page && Number(searchParams.page)}
-            />
+              initPage={Number(page)}
+            /> 
           </div>
         )}
       </div>
       {/* Phim noi bat */}
-      <div className="z-10 col-span-full mt-4 min-h-screen rounded bg-black pt-2 md:mt-0 lg:col-span-2">
+      <div className="z-10 col-span-full mt-4 min-h-screen rounded bg-black pt-2 md:mt-0 lg:col-span-2 px-2">
         <h1 className="text-center">PHIM NỔI BẬT</h1>
         <FeaturedMovies />
       </div>

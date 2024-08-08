@@ -1,9 +1,11 @@
 // Phim nổi bật
 
-import Image from 'next/image';
-import React from 'react'
+import usefetch from "@/hooks/useFetch";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 
-export const dataFirm = [
+export const dataFirm2 = [
   {
     id: 1,
     name: "Hồ Yêu Tiểu Hồng Nương: Trúc Nghiệp Thiên",
@@ -54,28 +56,41 @@ export const dataFirm = [
   },
 ];
 
+export default async function FeaturedMovies() {
+  const { data } = await usefetch<ResponseMovies>(
+    `/danh-sach/?sort_field=tmdb.vote_count&year=${new Date().getFullYear()}`,
+  );
+  if (!data) return null;
 
-export default function FeaturedMovies() {
+  const { items } = data;
+
+  const dataFirm = items.length > 5 ? items.slice(0, 6) : items;
+  const domain_img = process.env.NEXT_PUBLIC_DOMAIN_CDN_IMAGE;
   return (
-    <div className="mt-2 px-1">
-        {dataFirm.slice(0,5).map((firm) => {
-          return (
-            <div className="mb-1 flex gap-x-1 cursor-pointer w-full" key={firm.id}>
-              <div className="mb-2 flex h-auto lg:h-16 md:w-1/3 overflow-hidden rounded-sm">
-                <Image
-                  src={firm.img}
-                  alt="phim1"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  width={100}
-                  height={80}
+    <div className="mt-2 ">
+      {dataFirm.map((firm) => {
+        return (
+          <Link key={firm._id} href={`/movie/${firm.slug}`}>
+            <div className="mb-2 grid grid-cols-3">
+              <div className="col-span-1 mr-2 overflow-hidden rounded">
+                <img
+                  src={`${domain_img}/${firm.thumb_url}`}
+                  alt="Phimnoibat"
+                  style={{ width: "100%", objectFit: "cover" }}
                 />
               </div>
-              <span className="line-clamp-2 flex-1 overflow-hidden font-normal md:text-sm">
-                {firm.name}
-              </span>
+
+              <div className="col-span-2 space-y-4">
+                <p className="text-wrap line-clamp-2">{firm.name}</p>
+                <p className="text-wrap text-primary">
+                  {firm.year} - {firm.lang}
+                </p>
+                <button className="text-wrap px-2 border border-white">{firm.quality}</button>
+              </div>
             </div>
-          );
-        })} 
+          </Link>
+        );
+      })}
     </div>
   );
 }

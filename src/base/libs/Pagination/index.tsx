@@ -1,7 +1,6 @@
 "use client";
 
-
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-nprogress-bar";
 import { useState } from "react";
 
 const Pagination = ({
@@ -9,11 +8,10 @@ const Pagination = ({
   totalPage,
 }: {
   totalPage: number;
-  initPage:number
+  initPage: number;
 }) => {
-  const [pageActive, setPageActive] = useState<number>(()=>initPage);
+  const [pageActive, setPageActive] = useState<number>(() => initPage);
   const router = useRouter();
-
 
   /*Xử lý chọn trang*/
   const handleSelectPage = (pageNumber: number) => {

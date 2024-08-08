@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FaSearch } from "@/icons";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next-nprogress-bar";
 
 export default function Search() {
   const [search, setSearch] = React.useState<string>("");
