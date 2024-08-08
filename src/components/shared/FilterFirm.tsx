@@ -164,7 +164,8 @@ export default function FilterFirm({ genres, countries }: FilterFirmProps) {
           </div>
         )}
       </div>
-      <div className="relative cursor-pointer rounded bg-gray-800 px-2 py-1 font-light">
+      <div className="relative cursor-pointer rounded bg-gray-800 px-2 py-1 font-light" 
+      onClick={() => setShowFilterCountries(!showFilterCountries)}>
         {selectedCountry?.name && (
           <div
             className="absolute -right-1 -top-1 size-4 rounded-full text-white"
