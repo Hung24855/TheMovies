@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import MaxWithContainer from "@/components/layout/MaxWithContainer";
 import Footer from "@/components/layout/Footer";
 import ProvidersProgesbar from "@/base/libs/Progesbar";
+import AppContextProvider from "@/context/app.context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,9 +26,11 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} bg-black/90 text-white`}>
         <ProvidersProgesbar>
-          <Header />
-          <MaxWithContainer>{children}</MaxWithContainer>
-          <Footer />
+          <AppContextProvider>
+            <Header />
+            <MaxWithContainer>{children}</MaxWithContainer>
+            <Footer />
+          </AppContextProvider>
         </ProvidersProgesbar>
       </body>
     </html>

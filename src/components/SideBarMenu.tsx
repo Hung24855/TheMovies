@@ -8,7 +8,7 @@ export default function SideBarMenu({
   genres,
   countries,
 }: {
-  genres?: Genres[] ;
+  genres?: Genres[];
   countries?: Country[];
 }) {
   const [open, setOpen] = React.useState<boolean>(false);
@@ -28,7 +28,7 @@ export default function SideBarMenu({
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-0 z-10 h-screen w-1/2 bg-black/80 backdrop-blur-lg p-2 transition-transform duration-500 ease-in-out ${
+        className={`fixed left-0 top-0 z-10 h-screen w-1/2 bg-black/80 p-2 backdrop-blur-lg transition-transform duration-500 ease-in-out ${
           !open ? "-translate-x-full" : "translate-x-0"
         }`}
       >
@@ -86,7 +86,7 @@ export default function SideBarMenu({
               >
                 {genres &&
                   genres.length > 0 &&
-                  genres?.map(({_id,slug,name}) => (
+                  genres?.map(({ _id, slug, name }) => (
                     <Link href={`/genres/${slug}`} key={_id}>
                       <li
                         className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60"
@@ -123,7 +123,7 @@ export default function SideBarMenu({
               >
                 {countries &&
                   countries.length > 0 &&
-                  countries?.map(({_id,slug,name}) => (
+                  countries?.map(({ _id, slug, name }) => (
                     <Link href={`/country/${slug}`} key={_id}>
                       <li
                         className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60"
@@ -139,9 +139,16 @@ export default function SideBarMenu({
                   ))}
               </ul>
             </li>
-            <li className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60">
-              Sắp chiếu
-            </li>
+            <Link href={"/favourite"}>
+              <li
+                className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60"
+                onClick={() => {
+                  setOpen(!open);
+                }}
+              >
+                Yêu thích
+              </li>
+            </Link>
           </ul>
         </div>
         <IoMdClose

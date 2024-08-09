@@ -146,18 +146,18 @@ export default function FilterFirm({ genres, countries }: FilterFirmProps) {
               )}
             >
               {genres &&
-                genres?.map((genre) => (
+                genres?.map(({ _id, name, slug }) => (
                   <li
-                    key={genre._id}
+                    key={_id}
                     onClick={() =>
                       handleGenreClick({
-                        name: genre.name,
-                        slug: genre.slug,
+                        name: name,
+                        slug: slug,
                       })
                     }
                     className="by-1 px-2 hover:text-primary"
                   >
-                    {genre.name}
+                    {name}
                   </li>
                 ))}
             </ul>
@@ -187,18 +187,18 @@ export default function FilterFirm({ genres, countries }: FilterFirmProps) {
               )}
             >
               {countries &&
-                countries?.map((country) => (
+                countries?.map(({ _id, name, slug }) => (
                   <li
-                    key={country._id}
+                    key={_id}
                     onClick={() =>
                       handleCountryClick({
-                        name: country.name,
-                        slug: country.slug,
+                        name: name,
+                        slug: slug,
                       })
                     }
                     className="by-1 px-2 hover:text-primary"
                   >
-                    {country.name}
+                    {name}
                   </li>
                 ))}
             </ul>

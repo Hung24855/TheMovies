@@ -12,23 +12,24 @@ import usefetch from "@/hooks/useFetch";
 import Episodes from "@/components/movie/Episodes";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import Favourite from "@/components/movie/Favourite";
 
 export async function generateMetadata({
   params,
 }: {
   params: { name: string };
 }): Promise<Metadata> {
-const { data: movieDetail } = await usefetch<MovieDetail>(
-  `/phim/${params.name}`,
-);
+  const { data: movieDetail } = await usefetch<MovieDetail>(
+    `/phim/${params.name}`,
+  );
 
-if(!movieDetail) {
-  return {
-    title:"Not found"
+  if (!movieDetail) {
+    return {
+      title: "Not found",
+    };
   }
-}
 
-const {titleHead} = movieDetail.seoOnPage
+  const { titleHead } = movieDetail.seoOnPage;
 
   return {
     title: titleHead,
@@ -55,6 +56,7 @@ export default async function MoviePage({
   }
 
   const {
+    slug,
     name,
     actor = [],
     episode_current,
@@ -67,10 +69,11 @@ export default async function MoviePage({
     country = [],
     content,
     episodes = [],
-
   } = item;
 
-  const { seoSchema : {image} } = seoOnPage;
+  const {
+    seoSchema: { image },
+  } = seoOnPage;
 
   const { server_data: ListFirm } = episodes[0];
 
@@ -82,7 +85,6 @@ export default async function MoviePage({
   if (!srcIframe && status !== "trailer") {
     return notFound();
   }
-  
 
   return (
     <div className="min-h-screen p-2">
@@ -155,20 +157,17 @@ export default async function MoviePage({
               __html: content ?? "",
             }}
           />
-
-          <div className="flex w-full items-center justify-center gap-x-2 rounded-lg bg-[#191919] px-4 py-4 text-black md:w-max md:gap-x-6 md:px-8">
-            <div className="flex flex-col items-center gap-1">
-              <CiShare2 size={20} color="white" />
-              <span className="text-white">Share</span>
-            </div>
-            <button className="rounded-2xl border-2 border-primary bg-primary px-4 py-2">
-              {status !== "trailer" ? <a href="#video">Xem</a> : "Trailer"}
-            </button>
-            <div className="flex items-center justify-center gap-x-2 rounded-2xl border-2 border-primary px-4 py-2 text-white">
-              <CiHeart size={20} />
-              <span>Yêu thích</span>
-            </div>
-          </div>
+          {/* Yêu thích phim */}
+          <Favourite
+            slug={slug}
+            name={name}
+            thumb_url={image}
+            lang={lang}
+            year={year}
+            quality={quality}
+            status={status}
+            episode_current={episode_current}
+          />
         </div>
       </div>
 
@@ -185,7 +184,7 @@ export default async function MoviePage({
               className="aspect-video h-[200px] w-full overflow-hidden bg-stone-900 md:h-auto"
               allowFullScreen
               referrerPolicy="no-referrer"
-            ></iframe>     
+            ></iframe>
           </div>
           {/* Chọn tập phim */}
           <p>{episodes[0].server_name}</p>

@@ -94,10 +94,10 @@ export default async function Header() {
                 )}
               </button>
               <Link
-                href="/"
+                href="/favourite"
                 className="flex h-full items-center hover:text-primary"
               >
-                Sắp chiếu
+                Yêu thích
               </Link>
             </div>
           </div>
