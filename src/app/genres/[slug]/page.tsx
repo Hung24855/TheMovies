@@ -44,7 +44,7 @@ const {
 
   const { data } = await usefetch<ResponseMovies>(
     clsx(
-      `/the-loai/${params.slug}?page=${searchParams.page}`,
+      `/the-loai/${params.slug}?page=${page}`,
       year && `&year=${year}`,
       category && `&category=${category}`,
       sort_type && `&sort_type=${sort_type}`,
@@ -62,26 +62,24 @@ const {
   const { titlePage } = data;
 
   const { items: dataFirm = [], params: paramsMovie } = data;
-  if (!paramsMovie) {
+  if (!paramsMovie || !dataFirm) {
     return notFound();
   }
 
   const { pagination } = paramsMovie;
-  const totalpage =
-    pagination && pagination.totalItems > pagination.totalItemsPerPage
-      ? Math.floor(pagination.totalItems / pagination.totalItemsPerPage)
-      : 0;
+  const totalpage = Math.max(
+    1,
+    Math.floor(pagination.totalItems / pagination.totalItemsPerPage),
+  );
 
   if (Number(page) > totalpage) {
     return notFound();
   }
 
-   const [theloai, quocgia] = await Promise.all([
+   const [{ data: genres }, { data: countries }] = await Promise.all([
      usefetch<ResponseGenres>("/the-loai"),
      usefetch<ResponseCountries>("/quoc-gia"),
    ]);
-   const { data: genres } = theloai;
-   const { data: countries } = quocgia;
 
   return (
     <Fragment>

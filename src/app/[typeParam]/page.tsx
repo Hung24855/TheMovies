@@ -22,8 +22,6 @@ export async function generateMetadata({
     };
   }
 
-  
-
   return {
     title: type.title,
   };
@@ -59,12 +57,12 @@ export default async function SearchPage({
   // url get data
   let url = "";
   if (type.path === "tim-kiem") {
-    url = `/tim-kiem?keyword=${q}&page=${page}${paramFilter}`;
+    url = `/tim-kiem?keyword=${q.replace(/\s+/g, "+")}&page=${page}${paramFilter}`;
   } else {
     url = `/danh-sach/${type.path}?&page=${page}${paramFilter}`;
   }
 
-  const { data } = await usefetch<ResponseMovies>(url.replace(/\s+/g, ""));
+  const { data } = await usefetch<ResponseMovies>(url.replace(/\s+/g, ""),);
 
   if (!data) return notFound();
 
@@ -74,33 +72,28 @@ export default async function SearchPage({
   }
 
   const { pagination } = paramsMovie;
-  const totalpage =
-    pagination && pagination.totalItems > pagination.totalItemsPerPage
-      ? Math.floor(pagination.totalItems / pagination.totalItemsPerPage)
-      : 1;
+  const totalpage = Math.max(
+    1,
+    Math.floor(pagination.totalItems / pagination.totalItemsPerPage),
+  );
 
   if (Number(page) > totalpage) {
     return notFound();
   }
 
-  const [theloai, quocgia] = await Promise.all([
+  const [{ data: genres }, { data: countries }] = await Promise.all([
     usefetch<ResponseGenres>("/the-loai"),
     usefetch<ResponseCountries>("/quoc-gia"),
   ]);
-  const { data: genres } = theloai;
-  const { data: countries } = quocgia;
 
   return (
     <Fragment>
       {/* <div className="mt-2">
         <Breadcrumb />
       </div> */}
-      <div className="mt-2 min-h-screen w-full bg-black/90 pt-2">
+      <div className="mt-2 min-h-screen w-full bg-black/90 pb-2 pt-2">
         <h1 className="ml-2 font-bold">{type.title.toUpperCase()}</h1>
-        <FilterFirm
-          genres={genres?.items }
-          countries={countries?.items }
-        />
+        <FilterFirm genres={genres?.items} countries={countries?.items} />
         {dataFirm.length > 0 ? (
           <Fragment>
             <div className="mt-2 grid grid-cols-2 gap-2 px-2 pb-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">

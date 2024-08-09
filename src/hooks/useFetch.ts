@@ -2,6 +2,7 @@
 
 export default async function usefetch<T>(
   url: string,
+  revalidate?:number
 ) {
   try {
     const baseUrl = process.env.BASE_URL_API;
@@ -9,7 +10,7 @@ export default async function usefetch<T>(
       ? `${baseUrl}${url}`
       : `${baseUrl}/${url}`;
 
-    const response = await fetch(fullUrl,{next:{revalidate:60}}).then((res) => res.json());
+    const response = await fetch(fullUrl,{next:{revalidate:revalidate ?? 1500}}).then((res) => res.json());
     const data = response.data as T;
     return {
       data,

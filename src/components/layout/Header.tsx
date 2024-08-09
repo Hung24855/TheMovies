@@ -6,8 +6,11 @@ import usefetch from "@/hooks/useFetch";
 import Search from "../Search";
 
 export default async function Header() {
-  const { data: genres } = await usefetch<ResponseGenres>("/the-loai");
-  const { data: countries } = await usefetch<ResponseCountries>("/quoc-gia");
+  const { data: genres } = await usefetch<ResponseGenres>("/the-loai", 36000);
+  const { data: countries } = await usefetch<ResponseCountries>(
+    "/quoc-gia",
+    36000,
+  );
 
   return (
     <nav className="sticky inset-x-0 top-0 z-50 h-14 gap-x-2 bg-black/60 backdrop-blur-lg">
@@ -15,10 +18,7 @@ export default async function Header() {
         <div className="flex h-full w-full items-center justify-between px-2">
           <div className="flex h-full items-center">
             {/* Menu button */}
-            <SideBarMenu
-              genres={genres?.items ?? null}
-              countries={countries?.items ?? null}
-            />
+            <SideBarMenu genres={genres?.items} countries={countries?.items} />
             {/* Logo */}
             <img
               src="/Logo.png"
@@ -62,10 +62,10 @@ export default async function Header() {
                   <div className="grid w-max grid-cols-2 gap-x-5 gap-y-2 text-start md:grid-cols-3 lg:grid-cols-4">
                     {genres &&
                       genres.items.length > 0 &&
-                      genres.items.map((genre: Genres) => (
-                        <Link key={genre._id} href={`/genres/${genre.slug}`}>
+                      genres.items.map(({ _id, name, slug }: Genres) => (
+                        <Link key={_id} href={`/genres/${slug}`}>
                           <div className="whitespace-nowrap hover:text-primary">
-                            {genre.name}
+                            {name}
                           </div>
                         </Link>
                       ))}
@@ -79,22 +79,19 @@ export default async function Header() {
                     <IoMdArrowDropdown size={20} />
                   </span>
                 </span>
-                <div className="dropdown">
-                  <div className="grid w-max grid-cols-2 gap-x-5 gap-y-2 text-start md:grid-cols-3 lg:grid-cols-4">
-                    {countries &&
-                      countries.items.length > 0 &&
-                      countries.items.map((country: Country) => (
-                        <Link
-                          key={country._id}
-                          href={`/country/${country.slug}`}
-                        >
+                {countries && countries.items.length > 0 && (
+                  <div className="dropdown">
+                    <div className="grid w-max grid-cols-2 gap-x-5 gap-y-2 text-start md:grid-cols-3 lg:grid-cols-4">
+                      {countries.items.map(({ _id, slug, name }: Country) => (
+                        <Link key={_id} href={`/country/${slug}`}>
                           <div className="whitespace-nowrap hover:text-primary">
-                            {country.name}
+                            {name}
                           </div>
                         </Link>
                       ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </button>
               <Link
                 href="/"

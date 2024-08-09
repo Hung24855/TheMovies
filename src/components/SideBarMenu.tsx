@@ -8,8 +8,8 @@ export default function SideBarMenu({
   genres,
   countries,
 }: {
-  genres: Genres[] | null;
-  countries: Country[] | null;
+  genres?: Genres[] ;
+  countries?: Country[];
 }) {
   const [open, setOpen] = React.useState<boolean>(false);
   const [openSubMenuGenre, setopenSubMenuGenreGenre] =
@@ -86,17 +86,17 @@ export default function SideBarMenu({
               >
                 {genres &&
                   genres.length > 0 &&
-                  genres?.map((genre) => (
-                    <Link href={`/genres/${genre.slug}`} key={genre._id}>
+                  genres?.map(({_id,slug,name}) => (
+                    <Link href={`/genres/${slug}`} key={_id}>
                       <li
                         className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60"
-                        key={genre._id}
+                        key={_id}
                         onClick={() => {
                           setOpen(!open);
                         }}
                       >
                         <span className="mr-1">&bull;</span>
-                        {genre.name}
+                        {name}
                       </li>
                     </Link>
                   ))}
@@ -123,17 +123,17 @@ export default function SideBarMenu({
               >
                 {countries &&
                   countries.length > 0 &&
-                  countries?.map((country) => (
-                    <Link href={`/country/${country.slug}`} key={country._id}>
+                  countries?.map(({_id,slug,name}) => (
+                    <Link href={`/country/${slug}`} key={_id}>
                       <li
                         className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60"
-                        key={country._id}
+                        key={_id}
                         onClick={() => {
                           setOpen(!open);
                         }}
                       >
                         <span className="mr-1">&bull;</span>
-                        {country.name}
+                        {name}
                       </li>
                     </Link>
                   ))}

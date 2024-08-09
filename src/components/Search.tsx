@@ -11,6 +11,7 @@ export default function Search() {
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       const keyWord = search.replace(/\s+/g, "+");
+      
        //Thay các khoản trắng liên tiếp thành +
       router.push(`/tim-kiem?q=${keyWord}`);
       setSearch("");

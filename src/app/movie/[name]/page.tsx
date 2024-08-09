@@ -70,14 +70,14 @@ export default async function MoviePage({
 
   } = item;
 
-  const { seoSchema } = seoOnPage;
+  const { seoSchema : {image} } = seoOnPage;
 
   const { server_data: ListFirm } = episodes[0];
 
   let srcIframe =
     ["completed", "ongoing"].includes(status) && episode_current !== "Full"
-      ? ListFirm.filter((firm) => firm.slug === tap)[0]?.link_embed
-      : ListFirm[0]?.link_embed;
+      ? ListFirm.filter((firm) => firm.slug === tap)[0].link_embed
+      : ListFirm[0].link_embed;
 
   if (!srcIframe && status !== "trailer") {
     return notFound();
@@ -90,7 +90,7 @@ export default async function MoviePage({
       <div className="grid grid-cols-4 gap-x-5 bg-black/90 p-2">
         <div className="col-span-4 flex h-full items-center justify-center md:col-span-1">
           <img
-            src={seoSchema.image}
+            src={image}
             alt="img"
             className="h-full w-2/3 rounded object-cover md:w-full"
           />
@@ -148,6 +148,7 @@ export default async function MoviePage({
               {country[0].name}
             </span>
           </div>
+          {/* Mô tả phim */}
           <span
             className="mt-5 inline-block text-sm"
             dangerouslySetInnerHTML={{
@@ -184,10 +185,7 @@ export default async function MoviePage({
               className="aspect-video h-[200px] w-full overflow-hidden bg-stone-900 md:h-auto"
               allowFullScreen
               referrerPolicy="no-referrer"
-            ></iframe>
-
-           
-            
+            ></iframe>     
           </div>
           {/* Chọn tập phim */}
           <p>{episodes[0].server_name}</p>

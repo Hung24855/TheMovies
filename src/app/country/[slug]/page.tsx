@@ -67,22 +67,20 @@ export default async function CountryPage({ searchParams, params }: MovieContext
   }
 
   const { pagination } = paramsMovie;
-  const totalpage =
-    pagination && pagination.totalItems > pagination.totalItemsPerPage
-      ? Math.floor(pagination.totalItems / pagination.totalItemsPerPage)
-      : 0;
+  const totalpage = Math.max(
+    1,
+    Math.floor(pagination.totalItems / pagination.totalItemsPerPage),
+  );
 
   if (Number(page) > totalpage) {
     
     return notFound();
   }
 
-   const [theloai, quocgia] = await Promise.all([
+   const [{ data: genres }, { data: countries }] = await Promise.all([
      usefetch<ResponseGenres>("/the-loai"),
      usefetch<ResponseCountries>("/quoc-gia"),
    ]);
-   const { data: genres } = theloai;
-   const { data: countries } = quocgia;
 
   return (
     <Fragment>
