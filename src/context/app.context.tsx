@@ -1,6 +1,11 @@
 "use client";
 
-import { createContext, Dispatch, useEffect, useReducer } from "react";
+import {
+  createContext,
+  Dispatch,
+  useEffect,
+  useReducer,
+} from "react";
 
 export type InfoMovie = {
   slug: string;
@@ -56,13 +61,21 @@ export const reducer = (state: stateType, action: ContextAction) => {
 const initialState: stateType = {
   favoriteMovies: [],
 };
-
+// Tạo context
 export const AppContext = createContext<{
   state: stateType;
   dispatch: Dispatch<ContextAction>;
-}>({ state: initialState, dispatch: () => null });
+}>({
+  state: initialState,
+  dispatch: () => null,
+});
+
+
+
+// Bọc context
 const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
 
   useEffect(() => {
     const favMovies = JSON.parse(localStorage.getItem("fav-movies") || "[]");

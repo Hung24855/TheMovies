@@ -23,11 +23,11 @@ export default async function Home({ searchParams }: MovieContext) {
       category && `&category=${category}`,
       sort_type && `&sort_type=${sort_type}`,
       country && `&country=${country}`,
-      sort_field === "name"
-        ? `&sort_field=${sort_field}&sort_type=asc`
-        : "&sort_field=year",
+      sort_field === "name" && `&sort_field=${sort_field}&sort_type=asc`,
+      sort_field === "year" && `&sort_field=${sort_field}`,
     ).replace(/\s+/g, ""),
   );
+
 
   //Phải replace khoảng trắng vì clsxx sẽ tạo ra khoảng trắng => Gây k get được data từ API
 
@@ -36,20 +36,18 @@ export default async function Home({ searchParams }: MovieContext) {
     usefetch<ResponseCountries>("/quoc-gia"),
   ]);
 
-
   if (!data) {
     return notFound();
   }
 
- const {
-   items: dataFirm = [],
-   params: { pagination },
- } = data;
- const totalpage = Math.max(
-   1,
-   Math.floor(pagination.totalItems / pagination.totalItemsPerPage),
- );
-
+  const {
+    items: dataFirm = [],
+    params: { pagination },
+  } = data;
+  const totalpage = Math.max(
+    1,
+    Math.floor(pagination.totalItems / pagination.totalItemsPerPage),
+  );
 
   if (Number(page) > totalpage) {
     return notFound();

@@ -26,7 +26,12 @@ export default function Favourite({
 
   return (
     <div className="flex w-full items-center justify-center gap-x-2 rounded-lg bg-[#191919] px-4 py-4 text-black md:w-max md:gap-x-6 md:px-8">
-      <div className="flex flex-col items-center gap-1">
+      <div
+        className="flex flex-col items-center gap-1 cursor-pointer"
+        onClick={() => {
+          navigator.clipboard.writeText(window.location.href);
+        }}
+      >
         <CiShare2 size={20} color="white" />
         <span className="text-white">Share</span>
       </div>
