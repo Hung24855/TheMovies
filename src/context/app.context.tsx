@@ -6,25 +6,12 @@ import {
   useEffect,
   useReducer,
 } from "react";
+import { ContextAction, InfoMovie, stateType } from "./type";
 
-export type InfoMovie = {
-  slug: string;
-  name: string;
-  thumb_url: string;
-  lang: string;
-  year: number;
-  quality: string;
-  episode_current: string;
-  status: string;
-};
 
-export type stateType = {
-  favoriteMovies: InfoMovie[];
-};
 
-export type ContextAction = {
-  type: "Init" | "Add" | "Remove";
-  payload?: any;
+const initStateReducer: stateType = {
+  favoriteMovies: [],
 };
 
 export const reducer = (state: stateType, action: ContextAction) => {
@@ -58,27 +45,25 @@ export const reducer = (state: stateType, action: ContextAction) => {
   }
 };
 
-const initialState: stateType = {
-  favoriteMovies: [],
-};
+
 // Tạo context
 export const AppContext = createContext<{
   state: stateType;
   dispatch: Dispatch<ContextAction>;
 }>({
-  state: initialState,
+  state: initStateReducer,
   dispatch: () => null,
 });
 
 
-
+ 
 // Bọc context
 const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initStateReducer);
 
 
   useEffect(() => {
-    const favMovies = JSON.parse(localStorage.getItem("fav-movies") || "[]");
+    const favMovies: InfoMovie[] = JSON.parse(localStorage.getItem("fav-movies") || "[]");
     dispatch({
       type: "Init",
       payload: favMovies,

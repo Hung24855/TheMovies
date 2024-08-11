@@ -28,7 +28,6 @@ export default async function Home({ searchParams }: MovieContext) {
     ).replace(/\s+/g, ""),
   );
 
-
   //Phải replace khoảng trắng vì clsxx sẽ tạo ra khoảng trắng => Gây k get được data từ API
 
   const [{ data: genres }, { data: countries }] = await Promise.all([

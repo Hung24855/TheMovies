@@ -1,8 +1,10 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 import { CiShare2, CiHeart, FaHeartBroken } from "@/icons";
-import { AppContext, InfoMovie } from "@/context/app.context";
+import { AppContext } from "@/context/app.context";
 import clsx from "clsx";
+import { InfoMovie } from "@/context/type";
+import { toast } from "react-toastify";
 
 export default function Favourite({
   slug,
@@ -27,9 +29,10 @@ export default function Favourite({
   return (
     <div className="flex w-full items-center justify-center gap-x-2 rounded-lg bg-[#191919] px-4 py-4 text-black md:w-max md:gap-x-6 md:px-8">
       <div
-        className="flex flex-col items-center gap-1 cursor-pointer"
+        className="flex cursor-pointer flex-col items-center gap-1"
         onClick={() => {
           navigator.clipboard.writeText(window.location.href);
+          toast("Sao chép liên kết thành công!");
         }}
       >
         <CiShare2 size={20} color="white" />
