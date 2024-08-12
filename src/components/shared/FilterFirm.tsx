@@ -17,7 +17,7 @@ type filter = {
   slug: string | number;
 };
 
-export default function FilterFirm({ genres, countries }: FilterFirmProps) {
+export default function FilterFirm({ genres=[], countries=[] }: FilterFirmProps) {
   const router = useRouter();
   const [selectedSort, setSelectedSort] = useState<filter | undefined>();
   const [selectedGenre, setSelectedGenre] = useState<filter | undefined>();

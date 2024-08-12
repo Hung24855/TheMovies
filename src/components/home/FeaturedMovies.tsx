@@ -22,10 +22,11 @@ export default async function FeaturedMovies() {
                   src={`${domain_img}/${thumb_url}`}
                   alt="Phimnoibat"
                   style={{ width: "100%", objectFit: "cover" }}
+                  loading="lazy"
                 />
               </div>
 
-              <div className="col-span-2 space-y-4">
+              <div className="col-span-2 space-y-1">
                 <p className="line-clamp-2 text-wrap">{name}</p>
                 <p className="text-wrap text-primary">
                   {year} - {lang}

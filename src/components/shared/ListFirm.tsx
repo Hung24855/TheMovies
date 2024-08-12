@@ -11,17 +11,7 @@ export default function ListFirm({
   return (
     <Fragment>
       {dataFirm.length > 0 ? (
-        dataFirm.map(
-          ({
-            _id,
-            slug,
-            thumb_url,
-            name,
-            lang,
-            year,
-            quality,
-            episode_current,
-          }) => {
+        dataFirm.map(({_id,slug,thumb_url,name,lang,year,quality,episode_current,}) => {
             return (
               <Link key={_id} href={`/movie/${slug}`}>
                 <div className="relative mb-2 mt-2 flex h-full cursor-pointer flex-col justify-between overflow-hidden rounded duration-200">

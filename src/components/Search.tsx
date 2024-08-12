@@ -23,7 +23,7 @@ export default function Search() {
       <input
         type="text"
         placeholder="Tìm kiếm phim..."
-        className="w-[200px] px-2 py-1 text-black outline-none md:w-auto"
+        className="w-[200px] px-2 py-1 text-black outline-none md:w-[150px] lg:w-auto"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         onKeyDown={onKeyDown}
