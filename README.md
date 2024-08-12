@@ -15,3 +15,11 @@ Demo : https://nghiemhongmovie.vercel.app/
 - Lọc phim
 - Xem phim chất lượng cao
 - Responsive mọi thiết bị
+
+## Screenshots
+
+![Home](/public/demo/home.jpg)
+![Search](/public/demo/search.jpg)
+![Movie](/public/demo/movie-1.jpg)
+![Movie](/public/demo/movie-2.jpg)
+![Favourite](/public/demo/YeuThich.jpg)
