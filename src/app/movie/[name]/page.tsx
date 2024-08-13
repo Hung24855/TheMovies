@@ -78,9 +78,9 @@ export default async function MoviePage({
   const { server_data: ListFirm } = episodes[0];
 
   let srcIframe =
-    ["completed", "ongoing"].includes(status) && episode_current !== "Full"
-      ? ListFirm.filter((firm) => firm.slug === tap)[0].link_embed
-      : ListFirm[0].link_embed;
+    ["completed", "ongoing"].includes(status) && episode_current.toLowerCase() !== "full"
+      ? ListFirm.filter((firm) => firm.name === tap)[0]?.link_embed
+      : ListFirm[0]?.link_embed;
 
   if (!srcIframe && status !== "trailer") {
     return notFound();

@@ -27,9 +27,9 @@ export default function Episodes({ ListFirm=[],initEpisode }: { ListFirm: ListFi
             )}
             key={name}
             onClick={() => {
-              if (Episode !== Number(slug)) {
-                setEpisode(Number(slug));
-                router.push(`?tap=${slug}`, { scroll: false });
+              if (Episode !== Number(name)) {
+                setEpisode(Number(name));
+                router.push(`?tap=${name}`, { scroll: false });
               }
             }}
           >
