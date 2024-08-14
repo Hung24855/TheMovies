@@ -128,8 +128,8 @@ type MovieDetail = {
 };
 
 type MovieType = {
-  path: string;
-  title: string;
+  slug: string|number;
+  name: string|number;
 };
 
 type MovieContext = {

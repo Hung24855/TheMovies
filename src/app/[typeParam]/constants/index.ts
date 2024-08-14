@@ -1,15 +1,13 @@
 
 
 export const movieTypes: MovieType[] = [
-  { title: 'Phim mới', path: 'phim-moi' },
-  { title: 'Phim bộ', path: 'phim-bo' },
-  { title: 'Phim lẻ', path: 'phim-le' },
-  { title: 'Phim Vietsub', path: 'phim-vietsub' },
-  { title: 'Phim thuyết minh', path: 'phim-thuyet-minh' },
-  { title: 'Phim lồng tiếng', path: 'phim-long-tieng' },
-  { title: 'Phim hoàn thành', path: 'phim-bo-hoan-thanh' },
-  { title: 'Phim đang chiếu', path: 'phim-bo-dang-chieu' },
-  { title: 'Phim độc quyền', path: 'subteam' },
-  { title: 'Phim hoạt hình', path: 'hoat-hinh' },
-  { title: 'Tìm kiếm', path: 'tim-kiem' },
+  { name: 'Phim mới', slug: 'phim-moi' },
+  { name: 'Phim Vietsub', slug: 'phim-vietsub' },
+  { name: 'Phim thuyết minh', slug: 'phim-thuyet-minh' },
+  { name: 'Phim lồng tiếng', slug: 'phim-long-tieng' },
+  { name: 'Phim hoàn thành', slug: 'phim-bo-hoan-thanh' },
+  { name: 'Phim đang chiếu', slug: 'phim-bo-dang-chieu' },
+  { name: 'Phim độc quyền', slug: 'subteam' },
+  { name: 'Phim hoạt hình', slug: 'hoat-hinh' },
+  { name: 'Tìm kiếm', slug: 'tim-kiem' },
 ];

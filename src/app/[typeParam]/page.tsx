@@ -10,7 +10,7 @@ import { Metadata } from 'next'
 
 export async function generateMetadata({ params, searchParams }: MovieContext): Promise<Metadata> {
   const { typeParam } = params
-  const type = movieTypes.find((item) => item.path === typeParam)
+  const type = movieTypes.find((item) => item.slug === typeParam)
 
   if (!type) {
     return {
@@ -19,7 +19,7 @@ export async function generateMetadata({ params, searchParams }: MovieContext): 
   }
 
   return {
-    title: type.title
+    title: type.name as string
   }
 }
 
@@ -27,7 +27,7 @@ export default async function SearchPage({ params, searchParams }: MovieContext)
   const { typeParam } = params
   const { page = '1', q = '', category, year = '2024', sort_type, country, sort_field } = searchParams
 
-  const type = movieTypes.find((item) => item.path === typeParam)
+  const type = movieTypes.find((item) => item.slug === typeParam)
   if (!type) return notFound()
 
   const paramFilter = clsx(
@@ -39,10 +39,10 @@ export default async function SearchPage({ params, searchParams }: MovieContext)
   )
   // url get data
   let url = ''
-  if (type.path === 'tim-kiem') {
+  if (type.slug === 'tim-kiem') {
     url = `/tim-kiem?keyword=${q.replace(/\s+/g, '+')}&page=${page}${paramFilter}`
   } else {
-    url = `/danh-sach/${type.path}?&page=${page}${paramFilter}`
+    url = `/danh-sach/${type.slug}?&page=${page}${paramFilter}`
   }
 
   const { data } = await usefetch<ResponseMovies>(url.replace(/\s+/g, ''))
@@ -73,7 +73,7 @@ export default async function SearchPage({ params, searchParams }: MovieContext)
         <Breadcrumb />
       </div> */}
       <div className='mt-2 min-h-screen w-full bg-black/90 pb-2 pt-2'>
-        <h1 className='ml-2 font-bold'>{type.title.toUpperCase()}</h1>
+        <h1 className='ml-2 font-bold'>{(type.name as string).toUpperCase()}</h1>
         <FilterFirm genres={genres?.items ?? []} countries={countries?.items ?? []} />
         {dataFirm.length > 0 ? (
           <Fragment>

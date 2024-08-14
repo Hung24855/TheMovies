@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import { useRouter } from 'next-nprogress-bar'
 import React, { useState } from 'react'
 import { TiDeleteOutline } from '@/icons'
+import { movieTypes } from '@/app/[typeParam]/constants'
 
 type FilterFirmProps = {
   genres: Genres[]
@@ -21,7 +22,8 @@ enum FilterType {
   sort = 'sort',
   genre = 'genre',
   country = 'country',
-  year = 'year'
+  year = 'year',
+  typeMovie = 'type'
 }
 
 export default function FilterFirm({ genres = [], countries = [] }: FilterFirmProps) {
@@ -30,12 +32,14 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
   const [selectedGenre, setSelectedGenre] = useState<filter | undefined>()
   const [selectedCountry, setSelectedCountry] = useState<filter | undefined>()
   const [selectedYear, setSelectedYear] = useState<filter | undefined>()
+  const [selectedTypeMovie, setSelectedTypeMovie] = useState<filter | undefined>()
 
   // Hiện thị
   const [showFilter, setShowFilter] = useState(false)
   const [showFilterRenges, setShowFilterRenges] = useState(false)
   const [showFilterCountries, setShowFilterCountries] = useState(false)
   const [showFilterYears, setShowFilterYears] = useState(false)
+  const [showFilterTypeMovie, setShowFilterTypeMovie] = useState(false)
 
   const toggleFilter = (filterType: FilterType) => {
     switch (filterType) {
@@ -50,6 +54,9 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
         break
       case FilterType.year:
         setShowFilterYears(!showFilterYears)
+        break
+      case FilterType.typeMovie:
+        setShowFilterTypeMovie(!showFilterTypeMovie)
         break
     }
   }
@@ -71,6 +78,10 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
         setSelectedYear(filter)
         filter && toggleFilter(FilterType.year)
         break
+      case FilterType.typeMovie:
+        setSelectedTypeMovie(filter)
+        filter && toggleFilter(FilterType.typeMovie)
+        break
     }
   }
 
@@ -86,8 +97,9 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
       .filter(([, value]) => value !== undefined)
       .map(([key, value]) => `${key}=${value}`)
       .join('&')
-
-    router.push(`?${searchParams}`)
+     
+      
+    selectedTypeMovie ? router.push(`/${selectedTypeMovie.slug}?${searchParams}`) : router.push(`?${searchParams}`)
   }
 
   const renderFilterButton = (
@@ -95,7 +107,7 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
     selectedFilter: filter | undefined,
     placeholder: string,
     showFilterState: boolean,
-    options: filter[]
+    options: filter[] | MovieType[]
   ) => (
     <div
       className='relative cursor-pointer rounded bg-gray-800 px-2 py-1 font-light'
@@ -142,6 +154,7 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
         { name: 'Năm xuất bản', slug: 'year' },
         { name: 'Theo tên A-Z', slug: 'name' }
       ])}
+      {renderFilterButton(FilterType.typeMovie, selectedTypeMovie, '--Loại phim--', showFilterTypeMovie, movieTypes.slice(0,-1))}
       {renderFilterButton(FilterType.genre, selectedGenre, '--Thể loại--', showFilterRenges, genres)}
       {renderFilterButton(FilterType.country, selectedCountry, '--Quốc gia--', showFilterCountries, countries)}
       {renderFilterButton(

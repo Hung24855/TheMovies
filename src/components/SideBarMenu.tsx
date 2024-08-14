@@ -3,11 +3,13 @@
 import React from 'react'
 import { GiHamburgerMenu, IoMdClose, IoIosArrowForward } from '@/icons'
 import Link from 'next/link'
+import { movieTypes } from '@/app/[typeParam]/constants';
 
 export default function SideBarMenu({ genres, countries }: { genres: Genres[]; countries: Country[] }) {
   const [open, setOpen] = React.useState<boolean>(false)
   const [openSubMenuGenre, setopenSubMenuGenreGenre] = React.useState<boolean>(false)
   const [openSubMenuCountry, setopenSubMenuCountry] = React.useState<boolean>(false)
+  const [openSubMenuTypeMovie, setopenSubMenuTypeMovie] = React.useState<boolean>(false)
 
   return (
     <div className='md:hidden'>
@@ -54,6 +56,39 @@ export default function SideBarMenu({ genres, countries }: { genres: Genres[]; c
                 Phim lẻ
               </li>
             </Link>
+            <li>
+              <div
+                className='flex h-full w-full cursor-pointer justify-between rounded py-3 pl-1 hover:bg-slate-100/60'
+                onClick={() => setopenSubMenuTypeMovie(!openSubMenuTypeMovie)}
+              >
+                <span>Loại phim</span>
+                <IoIosArrowForward
+                  size={20}
+                  className={`transition-transform duration-500 ${openSubMenuGenre && 'rotate-90'}`}
+                />
+              </div>
+              {/* Sub menu */}
+              <ul
+                className={`${openSubMenuTypeMovie ? 'overflow-y-auto' : 'overflow-y-hidden'} scrollbar-custom duration-500 ease-in-out ${
+                  openSubMenuTypeMovie ? 'max-h-52' : 'max-h-0'
+                }`}
+              >
+                {movieTypes.slice(0, -1)?.map(({ slug, name }) => (
+                  <Link href={`/${slug}`} key={slug}>
+                    <li
+                      className='cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60'
+                      key={slug}
+                      onClick={() => {
+                        setOpen(!open)
+                      }}
+                    >
+                      <span className='mr-1'>&bull;</span>
+                      {name}
+                    </li>
+                  </Link>
+                ))}
+              </ul>
+            </li>
             <li>
               <div
                 className='flex h-full w-full cursor-pointer justify-between rounded py-3 pl-1 hover:bg-slate-100/60'
