@@ -1,65 +1,54 @@
-"use client";
+'use client'
 
-import React from "react";
-import { GiHamburgerMenu, IoMdClose, IoIosArrowForward } from "@/icons";
-import Link from "next/link";
+import React from 'react'
+import { GiHamburgerMenu, IoMdClose, IoIosArrowForward } from '@/icons'
+import Link from 'next/link'
 
-export default function SideBarMenu({
-  genres,
-  countries,
-}: {
-  genres?: Genres[];
-  countries?: Country[];
-}) {
-  const [open, setOpen] = React.useState<boolean>(false);
-  const [openSubMenuGenre, setopenSubMenuGenreGenre] =
-    React.useState<boolean>(false);
-  const [openSubMenuCountry, setopenSubMenuCountry] =
-    React.useState<boolean>(false);
+export default function SideBarMenu({ genres, countries }: { genres: Genres[]; countries: Country[] }) {
+  const [open, setOpen] = React.useState<boolean>(false)
+  const [openSubMenuGenre, setopenSubMenuGenreGenre] = React.useState<boolean>(false)
+  const [openSubMenuCountry, setopenSubMenuCountry] = React.useState<boolean>(false)
 
   return (
-    <div className="md:hidden">
+    <div className='md:hidden'>
       <div onClick={() => setOpen(!open)}>
-        <GiHamburgerMenu
-          size={35}
-          className={`mr-4 cursor-pointer md:hidden ${open && "hidden"}`}
-        />
+        <GiHamburgerMenu size={35} className={`mr-4 cursor-pointer md:hidden ${open && 'hidden'}`} />
       </div>
 
       {/* Sidebar */}
       <div
         className={`fixed left-0 top-0 z-10 h-screen w-1/2 bg-black/80 p-2 backdrop-blur-lg transition-transform duration-500 ease-in-out ${
-          !open ? "-translate-x-full" : "translate-x-0"
+          !open ? '-translate-x-full' : 'translate-x-0'
         }`}
       >
-        <div className="text-center font-bold">THE MOVIES</div>
-        <div className="mt-2 h-full text-left">
+        <div className='text-center font-bold'>THE MOVIES</div>
+        <div className='mt-2 h-full text-left'>
           <ul>
-            <Link href="/">
+            <Link href='/'>
               <li
-                className="flex cursor-pointer items-center rounded py-3 pl-1 font-semibold hover:bg-slate-100/60"
+                className='flex cursor-pointer items-center rounded py-3 pl-1 font-semibold hover:bg-slate-100/60'
                 onClick={() => {
-                  setOpen(!open);
+                  setOpen(!open)
                 }}
               >
                 Trang chủ
               </li>
             </Link>
-            <Link href="/phim-bo">
+            <Link href='/phim-bo'>
               <li
-                className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60"
+                className='flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60'
                 onClick={() => {
-                  setOpen(!open);
+                  setOpen(!open)
                 }}
               >
                 Phim bộ
               </li>
             </Link>
-            <Link href="/phim-le">
+            <Link href='/phim-le'>
               <li
-                className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60"
+                className='flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60'
                 onClick={() => {
-                  setOpen(!open);
+                  setOpen(!open)
                 }}
               >
                 Phim lẻ
@@ -67,21 +56,19 @@ export default function SideBarMenu({
             </Link>
             <li>
               <div
-                className="flex h-full w-full cursor-pointer justify-between rounded py-3 pl-1 hover:bg-slate-100/60"
+                className='flex h-full w-full cursor-pointer justify-between rounded py-3 pl-1 hover:bg-slate-100/60'
                 onClick={() => setopenSubMenuGenreGenre(!openSubMenuGenre)}
               >
                 <span>Thể loại</span>
                 <IoIosArrowForward
                   size={20}
-                  className={`transition-transform duration-500 ${
-                    openSubMenuGenre && "rotate-90"
-                  }`}
+                  className={`transition-transform duration-500 ${openSubMenuGenre && 'rotate-90'}`}
                 />
               </div>
               {/* Sub menu */}
               <ul
-                className={`${openSubMenuGenre ? "overflow-y-auto" : "overflow-y-hidden"} scrollbar-custom duration-500 ease-in-out ${
-                  openSubMenuGenre ? "max-h-52" : "max-h-0"
+                className={`${openSubMenuGenre ? 'overflow-y-auto' : 'overflow-y-hidden'} scrollbar-custom duration-500 ease-in-out ${
+                  openSubMenuGenre ? 'max-h-52' : 'max-h-0'
                 }`}
               >
                 {genres &&
@@ -89,13 +76,13 @@ export default function SideBarMenu({
                   genres?.map(({ _id, slug, name }) => (
                     <Link href={`/genres/${slug}`} key={_id}>
                       <li
-                        className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60"
+                        className='cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60'
                         key={_id}
                         onClick={() => {
-                          setOpen(!open);
+                          setOpen(!open)
                         }}
                       >
-                        <span className="mr-1">&bull;</span>
+                        <span className='mr-1'>&bull;</span>
                         {name}
                       </li>
                     </Link>
@@ -104,21 +91,19 @@ export default function SideBarMenu({
             </li>
             <li>
               <div
-                className="flex h-full w-full cursor-pointer justify-between rounded py-3 pl-1 hover:bg-slate-100/60"
+                className='flex h-full w-full cursor-pointer justify-between rounded py-3 pl-1 hover:bg-slate-100/60'
                 onClick={() => setopenSubMenuCountry(!openSubMenuCountry)}
               >
                 <span>Quốc gia</span>
                 <IoIosArrowForward
                   size={20}
-                  className={`transition-transform duration-500 ${
-                    openSubMenuCountry && "rotate-90"
-                  }`}
+                  className={`transition-transform duration-500 ${openSubMenuCountry && 'rotate-90'}`}
                 />
               </div>
               {/* Sub menu */}
               <ul
-                className={`${openSubMenuCountry ? "overflow-y-auto" : "overflow-y-hidden"} scrollbar-custom duration-500 ease-in-out ${
-                  openSubMenuCountry ? "max-h-52" : "max-h-0"
+                className={`${openSubMenuCountry ? 'overflow-y-auto' : 'overflow-y-hidden'} scrollbar-custom duration-500 ease-in-out ${
+                  openSubMenuCountry ? 'max-h-52' : 'max-h-0'
                 }`}
               >
                 {countries &&
@@ -126,24 +111,24 @@ export default function SideBarMenu({
                   countries?.map(({ _id, slug, name }) => (
                     <Link href={`/country/${slug}`} key={_id}>
                       <li
-                        className="cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60"
+                        className='cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60'
                         key={_id}
                         onClick={() => {
-                          setOpen(!open);
+                          setOpen(!open)
                         }}
                       >
-                        <span className="mr-1">&bull;</span>
+                        <span className='mr-1'>&bull;</span>
                         {name}
                       </li>
                     </Link>
                   ))}
               </ul>
             </li>
-            <Link href={"/favourite"}>
+            <Link href={'/favourite'}>
               <li
-                className="flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60"
+                className='flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60'
                 onClick={() => {
-                  setOpen(!open);
+                  setOpen(!open)
                 }}
               >
                 Yêu thích
@@ -151,20 +136,11 @@ export default function SideBarMenu({
             </Link>
           </ul>
         </div>
-        <IoMdClose
-          size={35}
-          className="absolute right-1 top-1 cursor-pointer"
-          onClick={() => setOpen(false)}
-        />
+        <IoMdClose size={35} className='absolute right-1 top-1 cursor-pointer' onClick={() => setOpen(false)} />
       </div>
 
       {/* Overlay */}
-      {open && (
-        <div
-          className="fixed inset-0 h-screen bg-black/50 md:hidden"
-          onClick={() => setOpen(false)}
-        ></div>
-      )}
+      {open && <div className='fixed inset-0 h-screen bg-black/50 md:hidden' onClick={() => setOpen(false)}></div>}
     </div>
-  );
+  )
 }

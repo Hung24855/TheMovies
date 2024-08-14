@@ -3,13 +3,17 @@ import { AppContext } from "@/context/app.context";
 import Link from "next/link";
 import React, { useContext } from "react";
 
+export const Metadata = () => {
+  return {
+    title: "Phim yêu thích",
+  };
+};
+
 export default function Favorite() {
   const {
     state: { favoriteMovies = [] },
-    dispatch,
   } = useContext(AppContext);
 
-  console.log(favoriteMovies);
 
   return (
     <div className="mt-2 min-h-screen bg-black/80 p-2">
