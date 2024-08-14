@@ -44,8 +44,8 @@ export default async function CountryPage({ searchParams, params }: MovieContext
   const { items: dataFirm = [], params: paramsMovie } = data
 
   const { pagination } = paramsMovie
-  const totalPage = Math.ceil(pagination?.totalItems / pagination?.totalItemsPerPage)
-
+  let totalPage = Math.ceil(pagination?.totalItems / pagination?.totalItemsPerPage)
+  if (totalPage === 0) totalPage = 1
   if (Number(page) > totalPage) {
     return notFound()
   }
@@ -57,7 +57,6 @@ export default async function CountryPage({ searchParams, params }: MovieContext
 
   return (
     <Fragment>
-     
       <div className='mt-2 min-h-screen bg-black pt-2'>
         <h1 className='ml-2 font-bold'>{`PHIM ${titlePage}`.toUpperCase()}</h1>
         <FilterFirm genres={genres?.items ?? []} countries={countries?.items ?? []} />

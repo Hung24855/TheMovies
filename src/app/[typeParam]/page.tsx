@@ -47,13 +47,17 @@ export default async function SearchPage({ params, searchParams }: MovieContext)
 
   const { data } = await usefetch<ResponseMovies>(url.replace(/\s+/g, ''))
 
-  if (!data) return notFound()
+  if (!data) {
+    console.log(1)
+
+    return notFound()
+  }
 
   const { items: dataFirm = [], params: paramsMovie } = data
 
   const { pagination } = paramsMovie
-  const totalPage = Math.ceil(pagination?.totalItems / pagination?.totalItemsPerPage)
-
+  let totalPage = Math.ceil(pagination?.totalItems / pagination?.totalItemsPerPage)
+  if (totalPage === 0) totalPage = 1
   if (Number(page) > totalPage) {
     return notFound()
   }

@@ -49,8 +49,8 @@ export default async function GenresPage({ searchParams, params }: MovieContext)
   }
 
   const { pagination } = paramsMovie
-const totalPage = Math.ceil(pagination?.totalItems / pagination?.totalItemsPerPage)
-
+  let totalPage = Math.ceil(pagination?.totalItems / pagination?.totalItemsPerPage)
+  if (totalPage === 0) totalPage = 1
   if (Number(page) > totalPage) {
     return notFound()
   }
