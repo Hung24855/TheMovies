@@ -1,14 +1,13 @@
 "use client";
 import { AppContext } from "@/context/app.context";
+import { Metadata } from "next";
 import Link from "next/link";
 import React, { useContext } from "react";
 
-export const Metadata = () => {
-  return {
-    title: "Phim yêu thích",
-  };
-};
-
+export const metadata: Metadata = {
+  title: 'Phim yêu thích',
+  description: '...',
+}
 export default function Favorite() {
   const {
     state: { favoriteMovies = [] },
