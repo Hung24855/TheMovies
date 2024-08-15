@@ -19,7 +19,7 @@ export default function SideBarMenu({ genres, countries }: { genres: Genres[]; c
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-0 z-10 h-screen w-1/2 bg-black/80 p-2 backdrop-blur-lg transition-transform duration-500 ease-in-out ${
+        className={`fixed left-0 top-0 z-10 h-screen w-[55%] bg-black/80 p-2 backdrop-blur-lg transition-transform duration-500 ease-in-out ${
           !open ? '-translate-x-full' : 'translate-x-0'
         }`}
       >
@@ -64,7 +64,7 @@ export default function SideBarMenu({ genres, countries }: { genres: Genres[]; c
                 <span>Loại phim</span>
                 <IoIosArrowForward
                   size={20}
-                  className={`transition-transform duration-500 ${openSubMenuGenre && 'rotate-90'}`}
+                  className={`transition-transform duration-500 ${openSubMenuTypeMovie && 'rotate-90'}`}
                 />
               </div>
               {/* Sub menu */}
@@ -73,10 +73,10 @@ export default function SideBarMenu({ genres, countries }: { genres: Genres[]; c
                   openSubMenuTypeMovie ? 'max-h-52' : 'max-h-0'
                 }`}
               >
-                {movieTypes.slice(0, -1)?.map(({ slug, name }) => (
+                {movieTypes.slice(0, -3)?.map(({ slug, name }) => (
                   <Link href={`/${slug}`} key={slug}>
                     <li
-                      className='cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60'
+                      className='cursor-pointer rounded py-2 pl-4 hover:bg-slate-100/60'
                       key={slug}
                       onClick={() => {
                         setOpen(!open)
@@ -111,7 +111,7 @@ export default function SideBarMenu({ genres, countries }: { genres: Genres[]; c
                   genres?.map(({ _id, slug, name }) => (
                     <Link href={`/genres/${slug}`} key={_id}>
                       <li
-                        className='cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60'
+                        className='cursor-pointer rounded py-2 pl-4 hover:bg-slate-100/60'
                         key={_id}
                         onClick={() => {
                           setOpen(!open)
@@ -146,7 +146,7 @@ export default function SideBarMenu({ genres, countries }: { genres: Genres[]; c
                   countries?.map(({ _id, slug, name }) => (
                     <Link href={`/country/${slug}`} key={_id}>
                       <li
-                        className='cursor-pointer rounded py-2 pl-8 hover:bg-slate-100/60'
+                        className='cursor-pointer rounded py-2 pl-4 hover:bg-slate-100/60'
                         key={_id}
                         onClick={() => {
                           setOpen(!open)
