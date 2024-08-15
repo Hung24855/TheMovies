@@ -25,11 +25,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function GenresPage({ searchParams, params }: MovieContext) {
-  const { page = '1', category, year = '2024', sort_type, country, sort_field } = searchParams
+  const { page = '1', category, year , sort_type, country, sort_field } = searchParams
 
   const { data } = await usefetch<ResponseMovies>(
     clsx(
-      `/the-loai/${params.slug}?page=${page}&year=${year}`,
+      `/the-loai/${params.slug}?page=${page}${year && `&year=${year}`}`,
       category && `&category=${category}`,
       sort_type && `&sort_type=${sort_type}`,
       country && `&country=${country}`,

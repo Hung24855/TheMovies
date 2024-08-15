@@ -6,13 +6,13 @@ import usefetch from '@/hooks/useFetch'
 import { notFound } from 'next/navigation'
 
 export default async function Home({ searchParams }: MovieContext) {
-  const { page = '1', category, year = '2024', sort_type, country, sort_field } = searchParams
+  const { page = '1', category, year, sort_type, country, sort_field } = searchParams
 
   // const searchParamsString = new URLSearchParams(
   //   Object.entries(searchParams).map(([key, value]) => [key, String(value)]),
   // ).toString();
 
-  const query = `/danh-sach/phim-moi-cap-nhat?page=${page}&year=${year}${category && `&category=${category}`}${
+  const query = `/danh-sach/phim-moi-cap-nhat?page=${page}${year && `&year=${year}`}${category && `&category=${category}`}${
     sort_type && `&sort_type=${sort_type}`
   }${country && `&country=${country}`}${
     sort_field === 'name' ? `&sort_field=${sort_field}&sort_type=asc` : sort_field === 'year' && `&sort_field=year`

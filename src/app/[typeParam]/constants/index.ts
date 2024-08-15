@@ -9,5 +9,7 @@ export const movieTypes: MovieType[] = [
   { name: 'Phim đang chiếu', slug: 'phim-bo-dang-chieu' },
   { name: 'Phim độc quyền', slug: 'subteam' },
   { name: 'Phim hoạt hình', slug: 'hoat-hinh' },
+  { name: 'Phim bộ', slug: 'phim-bo' },
+  { name: 'Phim lẻ', slug: 'phim-le' },
   { name: 'Tìm kiếm', slug: 'tim-kiem' },
 ];

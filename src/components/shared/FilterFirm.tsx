@@ -154,7 +154,7 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
         { name: 'Năm xuất bản', slug: 'year' },
         { name: 'Theo tên A-Z', slug: 'name' }
       ])}
-      {renderFilterButton(FilterType.typeMovie, selectedTypeMovie, '--Loại phim--', showFilterTypeMovie, movieTypes.slice(0,-1))}
+      {renderFilterButton(FilterType.typeMovie, selectedTypeMovie, '--Loại phim--', showFilterTypeMovie, movieTypes.slice(0,-3))}
       {renderFilterButton(FilterType.genre, selectedGenre, '--Thể loại--', showFilterRenges, genres)}
       {renderFilterButton(FilterType.country, selectedCountry, '--Quốc gia--', showFilterCountries, countries)}
       {renderFilterButton(

@@ -33,7 +33,7 @@ export default async function MoviePage({
 
   const { data: movieDetail } = await usefetch<MovieDetail>(`/phim/${params.name}`)
 
-  if(!movieDetail) {
+  if (!movieDetail) {
     notFound()
   }
   const { item, seoOnPage } = movieDetail
@@ -62,9 +62,13 @@ export default async function MoviePage({
 
   let srcIframe =
     ['completed', 'ongoing'].includes(status) && episode_current.toLowerCase() !== 'full'
-      ? ListFirm.filter((firm) => firm.name === tap)[0]?.link_embed
+      ? ListFirm.filter((firm) =>
+          firm.name.startsWith('0') ? firm.name.replace('0', '') === tap.replace('0', '') : firm.name === tap
+        )[0]?.link_embed
       : ListFirm[0]?.link_embed
 
+
+      
   if (!srcIframe && status !== 'trailer') {
     return notFound()
   }

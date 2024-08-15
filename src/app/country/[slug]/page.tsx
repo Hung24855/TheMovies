@@ -23,11 +23,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 export default async function CountryPage({ searchParams, params }: MovieContext) {
-  const { page = '1', category, year = '2024', sort_type, country, sort_field } = searchParams
+  const { page = '1', category, year, sort_type, country, sort_field } = searchParams
 
   const { data } = await usefetch<ResponseMovies>(
     clsx(
-      `/quoc-gia/${params.slug}?page=${page}&year=${year}`,
+      `/quoc-gia/${params.slug}?page=${page}${year && `&year=${year}`}`,
       category && `&category=${category}`,
       sort_type && `&sort_type=${sort_type}`,
       country && `&country=${country}`,

@@ -8,7 +8,7 @@ import clsx from 'clsx'
 import FilterFirm from '@/components/shared/FilterFirm'
 import { Metadata } from 'next'
 
-export async function generateMetadata({ params, searchParams }: MovieContext): Promise<Metadata> {
+export async function generateMetadata({ params }: MovieContext): Promise<Metadata> {
   const { typeParam } = params
   const type = movieTypes.find((item) => item.slug === typeParam)
 
@@ -25,13 +25,13 @@ export async function generateMetadata({ params, searchParams }: MovieContext): 
 
 export default async function SearchPage({ params, searchParams }: MovieContext) {
   const { typeParam } = params
-  const { page = '1', q = '', category, year = '2024', sort_type, country, sort_field } = searchParams
+  const { page = '1', q = '', category, year, sort_type, country, sort_field } = searchParams
 
   const type = movieTypes.find((item) => item.slug === typeParam)
   if (!type) return notFound()
 
   const paramFilter = clsx(
-    `&year=${year}`,
+    `${year && `&year=${year}`}`,
     category && `&category=${category}`,
     sort_type && `&sort_type=${sort_type}`,
     country && `&country=${country}`,
