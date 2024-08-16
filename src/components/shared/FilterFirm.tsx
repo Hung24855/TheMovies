@@ -45,18 +45,38 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
     switch (filterType) {
       case FilterType.sort:
         setShowFilter(!showFilter)
+        setShowFilterRenges(false)
+        setShowFilterCountries(false)
+        setShowFilterYears(false)
+        setShowFilterTypeMovie(false)
         break
       case FilterType.genre:
         setShowFilterRenges(!showFilterRenges)
+        setShowFilter(false)
+        setShowFilterCountries(false)
+        setShowFilterYears(false)
+        setShowFilterTypeMovie(false)
         break
       case FilterType.country:
         setShowFilterCountries(!showFilterCountries)
+        setShowFilter(false)
+        setShowFilterRenges(false)
+        setShowFilterYears(false)
+        setShowFilterTypeMovie(false)
         break
       case FilterType.year:
         setShowFilterYears(!showFilterYears)
+        setShowFilter(false)
+        setShowFilterRenges(false)
+        setShowFilterCountries(false)
+        setShowFilterTypeMovie(false)
         break
       case FilterType.typeMovie:
         setShowFilterTypeMovie(!showFilterTypeMovie)
+        setShowFilter(false)
+        setShowFilterRenges(false)
+        setShowFilterCountries(false)
+        setShowFilterYears(false)
         break
     }
   }
