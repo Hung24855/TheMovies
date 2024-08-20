@@ -12,11 +12,14 @@ export default async function Home({ searchParams }: MovieContext) {
   //   Object.entries(searchParams).map(([key, value]) => [key, String(value)]),
   // ).toString();
 
-  const query = `/danh-sach/phim-moi-cap-nhat?page=${page}${year && `&year=${year}`}${category && `&category=${category}`}${
-    sort_type && `&sort_type=${sort_type}`
-  }${country && `&country=${country}`}${
-    sort_field === 'name' ? `&sort_field=${sort_field}&sort_type=asc` : sort_field === 'year' && `&sort_field=year`
+  const query = `/danh-sach/phim-moi-cap-nhat?page=${page}${year ? `&year=${year}`:""}${category ? `&category=${category}`:""}${
+    sort_type ? `&sort_type=${sort_type}`:""
+  }${country ? `&country=${country}`:""}${
+    sort_field === 'name' ? `&sort_field=${sort_field}&sort_type=asc` : sort_field === 'year' ? `&sort_field=year`:""
   }`
+
+
+  
 
   const { data } = await usefetch<ResponseMovies>(query)
 
