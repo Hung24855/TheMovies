@@ -87,7 +87,8 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
     filterType: FilterType,
     selectedFilter: filter | undefined,
     placeholder: string,
-    options: filter[] | MovieType[]
+    options: filter[] | MovieType[],
+    isRightAligned: boolean = false
   ) => {
     const isActive = activeFilter === filterType;
     const hasSelection = !!selectedFilter;
@@ -130,7 +131,8 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
         {/* Dropdown Menu */}
         <div 
           className={clsx(
-            'absolute left-0 top-[calc(100%+8px)] z-50 min-w-[200px] w-max rounded-2xl bg-[#111]/95 backdrop-blur-xl border border-white/10 p-2 shadow-2xl transition-all duration-300 origin-top',
+            'absolute top-[calc(100%+8px)] z-50 min-w-[180px] sm:min-w-[200px] w-max max-w-[calc(100vw-2rem)] rounded-2xl bg-[#111]/95 backdrop-blur-xl border border-white/10 p-2 shadow-2xl transition-all duration-300 origin-top',
+            isRightAligned ? 'right-0 md:left-0 md:right-auto' : 'left-0',
             isActive ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0 pointer-events-none'
           )}
         >
@@ -170,14 +172,15 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
         </div>
 
         <div className='grid grid-cols-2 md:flex md:flex-wrap gap-2 w-full md:pb-0'>
-          {renderFilterButton(FilterType.typeMovie, selectedTypeMovie, 'Loại phim', movieTypes.slice(0,-3))}
-          {renderFilterButton(FilterType.genre, selectedGenre, 'Thể loại', genres)}
-          {renderFilterButton(FilterType.country, selectedCountry, 'Quốc gia', countries)}
+          {renderFilterButton(FilterType.typeMovie, selectedTypeMovie, 'Loại phim', movieTypes.slice(0,-3), false)}
+          {renderFilterButton(FilterType.genre, selectedGenre, 'Thể loại', genres, true)}
+          {renderFilterButton(FilterType.country, selectedCountry, 'Quốc gia', countries, false)}
           {renderFilterButton(
             FilterType.year,
             selectedYear,
             'Năm sản xuất',
-            years.map((year) => ({ name: year, slug: year }))
+            years.map((year) => ({ name: year, slug: year })),
+            true
           )}
         </div>
         
