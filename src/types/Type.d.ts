@@ -67,6 +67,12 @@ type ResponseMovies = {
 };
 
 type MovieDetail = {
+  breadCrumb?: {
+    name: string;
+    slug?: string;
+    isCurrent?: boolean;
+    position?: number;
+  }[];
   seoOnPage: {
     titleHead: string;
     seoSchema: {
@@ -76,12 +82,17 @@ type MovieDetail = {
     descriptionHead: string;
   };
   item: {
-    tmdb: {
-      type: string;
-      id: string;
-      season: number | null;
-      vote_average: number;
-      vote_count: number;
+    tmdb?: {
+      type?: string;
+      id?: string;
+      season?: number | null;
+      vote_average?: number;
+      vote_count?: number;
+    };
+    imdb?: {
+      id?: string;
+      vote_average?: number;
+      vote_count?: number;
     };
     modified: {
       time: Date;
@@ -89,7 +100,8 @@ type MovieDetail = {
     _id: string;
     name: string;
     slug: string;
-    origin_name: string;
+    origin_name?: string;
+    alternative_names?: string[];
     content: string;
     type: string;
     status: "completed" | "ongoing" | "trailer";
@@ -98,16 +110,16 @@ type MovieDetail = {
     is_copyright: boolean;
     sub_docquyen: boolean;
     chieurap: boolean;
-    trailer_url: string;
+    trailer_url?: string;
     time: string;
     episode_current: string;
     episode_total: string;
     quality: string;
     lang: string;
     year: number;
-    view: number;
-    actor: string[];
-    director: string[];
+    view?: number;
+    actor?: string[];
+    director?: string[];
     category: {
       id: string;
       name: string;

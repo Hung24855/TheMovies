@@ -72,24 +72,30 @@ export default async function SearchPage({ params, searchParams }: MovieContext)
       {/* <div className="mt-2">
         <Breadcrumb />
       </div> */}
-      <div className='mt-2 min-h-screen w-full bg-black/90 pb-2 pt-2'>
-        <h1 className='ml-2 font-bold'>{(type.name as string).toUpperCase()}</h1>
-        <FilterFirm genres={genres?.items ?? []} countries={countries?.items ?? []} />
-        {dataFirm.length > 0 ? (
-          <Fragment>
-            <div className='mt-2 grid grid-cols-2 gap-2 px-2 pb-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-              <ListFirm dataFirm={dataFirm} />
-            </div>
-            {/* Phân trang */}
-            {pagination && totalPage > 1 && (
-              <div className='flex items-center justify-center bg-black pb-10 pt-16'>
-                <Pagination totalPage={totalPage} initPage={Number(page)} />
+      <div className='w-full px-2 md:px-12 lg:px-20 pt-32 relative z-20 min-h-screen'>
+        <div className='pb-10'>
+          <div className='relative z-50 mb-6 flex flex-col md:flex-row items-start md:items-center justify-between border-b border-white/10 pb-4'>
+            <h1 className='text-2xl font-bold uppercase tracking-wider text-white mb-4 md:mb-0'>
+              {(type.name as string).toUpperCase()}
+            </h1>
+            <FilterFirm genres={genres?.items ?? []} countries={countries?.items ?? []} />
+          </div>
+          {dataFirm.length > 0 ? (
+            <Fragment>
+              <div className='grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'>
+                <ListFirm dataFirm={dataFirm} />
               </div>
-            )}
-          </Fragment>
-        ) : (
-          <div className='mt-28 text-center text-3xl font-semibold text-white'>Không có kết quả</div>
-        )}
+              {/* Phân trang */}
+              {pagination && totalPage > 1 && (
+                <div className='mt-12 flex items-center justify-center pb-6'>
+                  <Pagination totalPage={totalPage} initPage={Number(page)} />
+                </div>
+              )}
+            </Fragment>
+          ) : (
+            <div className='mt-28 text-center text-3xl font-semibold text-white'>Không có kết quả</div>
+          )}
+        </div>
       </div>
     </Fragment>
   )

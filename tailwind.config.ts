@@ -7,8 +7,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: '#e4d804',
-        res:"#772727"
+        primary: '#e50914',
+        secondary: '#141414',
+        'dark-glass': 'rgba(0, 0, 0, 0.7)',
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

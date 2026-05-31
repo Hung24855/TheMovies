@@ -13,17 +13,27 @@ export default function SideBarMenu({ genres, countries }: { genres: Genres[]; c
 
   return (
     <div className='md:hidden'>
-      <div onClick={() => setOpen(!open)}>
-        <GiHamburgerMenu size={35} className={`mr-4 cursor-pointer md:hidden ${open && 'hidden'}`} />
+      <div onClick={() => setOpen(!open)} className='relative z-[100] p-1 -ml-1 cursor-pointer'>
+        <GiHamburgerMenu size={32} className={`mr-2 md:hidden ${open && 'hidden'}`} />
       </div>
+
+      {/* Overlay */}
+      {open && <div className='fixed inset-0 h-screen bg-black/50 md:hidden z-40' onClick={() => setOpen(false)}></div>}
 
       {/* Sidebar */}
       <div
-        className={`fixed left-0 top-0 z-10 h-screen w-[55%] bg-black/80 p-2 backdrop-blur-lg transition-transform duration-500 ease-in-out ${
+        className={`fixed left-0 top-0 z-50 h-screen w-[70%] sm:w-[55%] bg-[#0a0a0a] border-r border-white/10 p-4 shadow-2xl transition-transform duration-500 ease-in-out ${
           !open ? '-translate-x-full' : 'translate-x-0'
         }`}
       >
-        <div className='text-center font-bold'>THE MOVIES</div>
+        <div className='flex items-center justify-center gap-2 mt-2 mb-8'>
+          <div className='w-8 h-8 rounded-full bg-gradient-to-br from-primary/80 to-primary/20 flex items-center justify-center border border-primary/50'>
+            <span className='font-black text-xs text-white drop-shadow-md tracking-tighter'>NH</span>
+          </div>
+          <span className='text-lg font-black tracking-widest text-white'>
+            HONG<span className='text-primary'>MOVIE</span>
+          </span>
+        </div>
         <div className='mt-2 h-full text-left'>
           <ul>
             <Link href='/'>
@@ -109,7 +119,7 @@ export default function SideBarMenu({ genres, countries }: { genres: Genres[]; c
                 {genres &&
                   genres.length > 0 &&
                   genres?.map(({ _id, slug, name }) => (
-                    <Link href={`/genres/${slug}`} key={_id}>
+                    <Link href={`/the-loai/${slug}`} key={_id}>
                       <li
                         className='cursor-pointer rounded py-2 pl-4 hover:bg-slate-100/60'
                         key={_id}
@@ -144,7 +154,7 @@ export default function SideBarMenu({ genres, countries }: { genres: Genres[]; c
                 {countries &&
                   countries.length > 0 &&
                   countries?.map(({ _id, slug, name }) => (
-                    <Link href={`/country/${slug}`} key={_id}>
+                    <Link href={`/quoc-gia/${slug}`} key={_id}>
                       <li
                         className='cursor-pointer rounded py-2 pl-4 hover:bg-slate-100/60'
                         key={_id}
@@ -159,7 +169,7 @@ export default function SideBarMenu({ genres, countries }: { genres: Genres[]; c
                   ))}
               </ul>
             </li>
-            <Link href={'/favourite'}>
+            <Link href={'/yeu-thich'}>
               <li
                 className='flex cursor-pointer items-center rounded py-3 pl-1 hover:bg-slate-100/60'
                 onClick={() => {
@@ -171,11 +181,8 @@ export default function SideBarMenu({ genres, countries }: { genres: Genres[]; c
             </Link>
           </ul>
         </div>
-        <IoMdClose size={35} className='absolute right-1 top-1 cursor-pointer' onClick={() => setOpen(false)} />
+        <IoMdClose size={35} className='absolute right-2 top-2 cursor-pointer z-[60] hover:text-primary transition-colors' onClick={() => setOpen(false)} />
       </div>
-
-      {/* Overlay */}
-      {open && <div className='fixed inset-0 h-screen bg-black/50 md:hidden' onClick={() => setOpen(false)}></div>}
     </div>
   )
 }

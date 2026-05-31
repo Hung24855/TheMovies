@@ -19,17 +19,21 @@ export default function Search() {
   }
 
   return (
-    <div className='flex items-center rounded bg-white px-1'>
+    <div className='group flex items-center rounded-full bg-white/5 backdrop-blur-md px-4 py-2 border border-white/10 focus-within:border-primary focus-within:bg-black/60 focus-within:shadow-[0_0_20px_rgba(229,9,20,0.3)] transition-all duration-300'>
+      <FaSearch size={16} className='text-white/50 group-focus-within:text-primary transition-colors cursor-pointer mr-2' onClick={() => {
+        if(search.trim()) {
+           router.push(`/tim-kiem?q=${search.replace(/\s+/g, '+')}`)
+           setSearch('')
+        }
+      }} />
       <input
         type='text'
         placeholder='Tìm kiếm phim...'
-        className='w-[200px] px-2 py-1 text-black outline-none md:w-[150px] lg:w-auto'
+        className='w-[150px] md:w-[200px] lg:w-[250px] bg-transparent text-[14px] text-white placeholder-white/40 outline-none transition-all duration-300'
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         onKeyDown={onKeyDown}
-      ></input>
-
-      <FaSearch size={20} color='gray' className='cursor-pointer' />
+      />
     </div>
   )
 }

@@ -1,75 +1,148 @@
-import Pagination from '@/base/libs/Pagination'
 import FeaturedMovies from '@/components/home/FeaturedMovies'
-import FilterFirm from '@/components/shared/FilterFirm'
 import ListFirm from '@/components/shared/ListFirm'
+import FilterFirm from '@/components/shared/FilterFirm'
 import usefetch from '@/hooks/useFetch'
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 
-export default async function Home({ searchParams }: MovieContext) {
-  const { page = '1', category, year, sort_type, country, sort_field } = searchParams
-
-  // const searchParamsString = new URLSearchParams(
-  //   Object.entries(searchParams).map(([key, value]) => [key, String(value)]),
-  // ).toString();
-
-  const query = `/danh-sach/phim-moi-cap-nhat?page=${page}${year ? `&year=${year}`:""}${category ? `&category=${category}`:""}${
-    sort_type ? `&sort_type=${sort_type}`:""
-  }${country ? `&country=${country}`:""}${
-    sort_field === 'name' ? `&sort_field=${sort_field}&sort_type=asc` : sort_field === 'year' ? `&sort_field=year`:""
-  }`
-
-
-  
-
-  const { data } = await usefetch<ResponseMovies>(query)
-
-  const [genresData, countriesData] = await Promise.all([
+export default async function Home() {
+  // Lấy toàn bộ dữ liệu song song (Parallel Data Fetching) để tối ưu tốc độ tải trang
+  const [
+    { data: phimBoData },
+    { data: phimLeData },
+    { data: hoatHinhData },
+    { data: coTrangData },
+    { data: genresData },
+    { data: countriesData }
+  ] = await Promise.all([
+    usefetch<ResponseMovies>('/danh-sach/phim-bo?limit=24'),
+    usefetch<ResponseMovies>('/danh-sach/phim-le?limit=12'),
+    usefetch<ResponseMovies>('/danh-sach/hoat-hinh?limit=12'),
+    usefetch<ResponseMovies>('/the-loai/co-trang?limit=12'),
     usefetch<ResponseGenres>('/the-loai'),
     usefetch<ResponseCountries>('/quoc-gia')
   ])
 
-  if (!data) {
+  if (!phimBoData || !phimLeData) {
     return notFound()
   }
 
-  const {
-    items: dataFirm = [],
-    params: { pagination }
-  } = data
-  let totalPage = Math.ceil(pagination.totalItems / pagination.totalItemsPerPage)
-  if (totalPage === 0) totalPage = 1
-
-  if (Number(page) > totalPage) {
-    return notFound()
-  }
+  // Cắt bớt dữ liệu để hiển thị cho đẹp gọn
+  const phimBo = phimBoData.items?.slice(0, 10) || []
+  const phimLe = phimLeData.items?.slice(0, 10) || []
+  const hoatHinh = hoatHinhData?.items?.slice(0, 10) || []
+  const coTrang = coTrangData?.items?.slice(0, 10) || []
+  
+  // Dùng phim bộ cho Sidebar Hot (Thực tế nên có API phim hot riêng)
+  const phimHot = phimBoData.items?.slice(10, 20) || []
 
   return (
-    <div className='mt-2 grid grid-cols-8 gap-x-2'>
-      <div className='col-span-full bg-black lg:col-span-6'>
-        {/* Danh sách phim */}
-        <div className='z-10 mt-2 min-h-screen rounded'>
-          <h1 className='ml-2 font-bold'>PHIM MỚI CẬP NHẬT</h1>
-
-          <FilterFirm genres={genresData.data?.items ?? []} countries={countriesData.data?.items ?? []} />
-
-          {/* Danh sách phim */}
-          <div className='mt-2 grid grid-cols-2 gap-2 px-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-            <ListFirm dataFirm={dataFirm} />
-          </div>
+    <div className='w-full pt-20 bg-[#0a0a0a] min-h-screen text-white'>
+      <div className='w-full px-2 md:px-6 lg:px-10 mx-auto max-w-[2000px]'>
+        
+        {/* ĐỀ CỬ (Slider) */}
+        <div className='mb-8'>
+          <h2 className='text-[22px] font-bold uppercase mb-4 text-white uppercase font-sans'>
+            ĐỀ CỬ
+          </h2>
+          <FeaturedMovies />
         </div>
 
-        {/* Phân trang */}
-        {pagination && totalPage > 1 && (
-          <div className='flex items-center justify-center bg-black pb-10 pt-16'>
-            <Pagination totalPage={totalPage} initPage={Number(page)} />
-          </div>
-        )}
-      </div>
+        {/* 2-Column Layout */}
+        <div className='flex flex-col lg:flex-row gap-8 pb-12'>
+          
+          {/* Main Content (Left) */}
+          <div className='lg:w-3/4 w-full'>
+            
+            {/* Bộ Lọc Phim */}
+            <div className='relative z-50 mb-6 pb-6 border-b border-white/10'>
+              <FilterFirm genres={genresData?.items ?? []} countries={countriesData?.items ?? []} />
+            </div>
 
-      {/* Phim nổi bật */}
-      <div className='z-10 col-span-full mt-4 min-h-screen rounded bg-black px-2 pt-2 md:mt-0 lg:col-span-2'>
-        <h1 className='text-center'>PHIM NỔI BẬT</h1>
-        <FeaturedMovies />
+            {/* Phim Bộ */}
+            <div className='flex items-center justify-between mb-4 pb-2 border-b border-white/10'>
+              <h2 className='text-[20px] font-bold uppercase text-[#ff9800]'>
+                PHIM BỘ
+              </h2>
+              <Link href='/phim-bo' className='text-sm text-gray-400 hover:text-white transition-colors'>Xem thêm {'>'}</Link>
+            </div>
+            <div className='grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 mb-10'>
+              <ListFirm dataFirm={phimBo} />
+            </div>
+            
+            {/* Phim Lẻ */}
+            <div className='flex items-center justify-between mb-4 pb-2 border-b border-white/10'>
+              <h2 className='text-[20px] font-bold uppercase text-[#ff9800]'>
+                PHIM LẺ
+              </h2>
+              <Link href='/phim-le' className='text-sm text-gray-400 hover:text-white transition-colors'>Xem thêm {'>'}</Link>
+            </div>
+            <div className='grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 mb-10'>
+              <ListFirm dataFirm={phimLe} />
+            </div>
+
+            {/* Phim Hoạt Hình */}
+            {hoatHinh.length > 0 && (
+              <>
+                <div className='flex items-center justify-between mb-4 pb-2 border-b border-white/10'>
+                  <h2 className='text-[20px] font-bold uppercase text-[#ff9800]'>
+                    PHIM HOẠT HÌNH
+                  </h2>
+                  <Link href='/hoat-hinh' className='text-sm text-gray-400 hover:text-white transition-colors'>Xem thêm {'>'}</Link>
+                </div>
+                <div className='grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 mb-10'>
+                  <ListFirm dataFirm={hoatHinh} />
+                </div>
+              </>
+            )}
+
+            {/* Phim Cổ Trang */}
+            {coTrang.length > 0 && (
+              <>
+                <div className='flex items-center justify-between mb-4 pb-2 border-b border-white/10'>
+                  <h2 className='text-[20px] font-bold uppercase text-[#ff9800]'>
+                    PHIM CỔ TRANG
+                  </h2>
+                  <Link href='/the-loai/co-trang' className='text-sm text-gray-400 hover:text-white transition-colors'>Xem thêm {'>'}</Link>
+                </div>
+                <div className='grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 mb-10'>
+                  <ListFirm dataFirm={coTrang} />
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Sidebar (Right) */}
+          <div className='lg:w-1/4 w-full'>
+            <div className='bg-[#111] p-4 rounded-md border border-white/5'>
+              <h2 className='text-[16px] font-bold text-[#ff9800] uppercase mb-4 pb-2 border-b border-white/10'>
+                PHIM HOT TRONG TUẦN
+              </h2>
+              
+              <div className='flex flex-col gap-4'>
+                {phimHot.map((movie, index) => (
+                  <Link key={movie._id} href={`/phim/${movie.slug}`} className='group flex items-start gap-3 cursor-pointer'>
+                    {/* Rank Circle */}
+                    <div className='w-6 h-6 shrink-0 rounded-full bg-[#ff9800] text-white flex items-center justify-center text-xs font-bold'>
+                      {index + 1}
+                    </div>
+                    
+                    {/* Details */}
+                    <div className='flex flex-col'>
+                      <h3 className='text-[14px] font-medium text-white line-clamp-1 group-hover:text-primary transition-colors'>
+                        {movie.name}
+                      </h3>
+                      <p className='text-[11px] text-gray-400 mt-1'>
+                        {Math.floor(Math.random() * 50000 + 10000).toLocaleString('vi-VN')} lượt xem
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   )

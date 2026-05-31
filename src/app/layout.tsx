@@ -24,13 +24,13 @@ export default function RootLayout({
   return (
     <html lang='en' className='scroll-smooth'>
       <head>
-        <link rel='icon' href='/logo-white.png' sizes='any' />
+        <link rel='icon' href='/favicon.svg' type='image/svg+xml' />
       </head>
-      <body className={`${inter.className} bg-black/90 text-white`}>
+      <body className={`${inter.className}`}>
         <ProvidersProgesbar>
           <AppContextProvider>
             <Header />
-            <MaxWithContainer>{children}</MaxWithContainer>
+            <main className="w-full min-h-screen pb-10">{children}</main>
             <Footer />
           </AppContextProvider>
           <Toast />

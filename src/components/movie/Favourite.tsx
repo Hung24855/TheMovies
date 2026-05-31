@@ -18,54 +18,50 @@ export default function Favourite({ slug, name, thumb_url, lang, year, quality, 
   }, [favoriteMovies, slug])
 
   return (
-    <div className='flex w-full items-center justify-center gap-x-2 rounded-lg bg-[#191919] px-4 py-4 text-black md:w-max md:gap-x-6 md:px-8'>
+    <div className='flex items-center gap-2 md:gap-3'>
+      {/* Nút Share */}
       <div
-        className='flex cursor-pointer flex-col items-center gap-1'
+        className='flex cursor-pointer items-center justify-center w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/10 hover:bg-white/20 transition-all duration-300'
         onClick={() => {
           navigator.clipboard.writeText(window.location.href)
           toast('Sao chép liên kết thành công!')
         }}
+        title="Chia sẻ"
       >
-        <CiShare2 size={20} color='white' />
-        <span className='text-white'>Share</span>
+        <CiShare2 size={18} className='text-white' />
       </div>
-      <button className='rounded-2xl border-2 border-primary bg-primary px-4 py-2'>
-        {status !== 'trailer' ? <a href='#video'>Xem</a> : 'Trailer'}
-      </button>
+
+      {/* Nút Xem Phim */}
+      {status !== 'trailer' && (
+        <a 
+          href='#video'
+          className='flex items-center justify-center rounded-md bg-primary text-white font-bold px-4 py-2 hover:shadow-[0_0_20px_rgba(229,9,20,0.5)] hover:-translate-y-0.5 transition-all duration-300'
+        >
+          Xem Phim
+        </a>
+      )}
+
+      {/* Nút Yêu thích */}
       <div
         className={clsx(
-          'flex cursor-pointer items-center justify-center gap-x-2 rounded-2xl border-2 border-primary px-4 py-2 text-white',
-          {
-            'bg-red-600': isFavourite
-          }
+          'flex cursor-pointer items-center justify-center gap-2 rounded-md border px-4 py-2 font-medium transition-all duration-300 hover:-translate-y-0.5',
+          isFavourite 
+            ? 'bg-primary/20 text-primary border-primary shadow-[0_0_15px_rgba(229,9,20,0.2)]' 
+            : 'bg-white/5 text-white/80 border-white/10 hover:bg-white/10 hover:text-white'
         )}
         onClick={() => {
           if (!isFavourite) {
             dispatch({
               type: 'Add',
-              payload: {
-                slug,
-                name,
-                thumb_url,
-                lang,
-                year,
-                quality,
-                status,
-                episode_current
-              }
+              payload: { slug, name, thumb_url, lang, year, quality, status, episode_current }
             })
-          }
-
-          if (isFavourite) {
-            dispatch({
-              type: 'Remove',
-              payload: slug
-            })
+          } else {
+            dispatch({ type: 'Remove', payload: slug })
           }
         }}
       >
-        {isFavourite ? <FaHeartBroken size={16} color='white' /> : <CiHeart size={20} />}
-        <span>{isFavourite ? 'Bỏ thích' : 'Yêu thích'}</span>
+        {isFavourite ? <FaHeartBroken size={16} /> : <CiHeart size={20} />}
+        <span className='text-sm whitespace-nowrap'>{isFavourite ? 'Bỏ thích' : 'Yêu thích'}</span>
       </div>
     </div>
   )

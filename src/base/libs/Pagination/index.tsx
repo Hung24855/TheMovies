@@ -2,6 +2,7 @@
 
 import { useRouter } from "next-nprogress-bar";
 import { useState } from "react";
+import clsx from "clsx";
 
 const Pagination = ({
   initPage = 1,
@@ -13,7 +14,6 @@ const Pagination = ({
   const [pageActive, setPageActive] = useState<number>(() => initPage);
   const router = useRouter();
 
-  /*Xử lý chọn trang*/
   const handleSelectPage = (pageNumber: number) => {
     if (pageNumber !== pageActive) {
       setPageActive(pageNumber);
@@ -37,65 +37,74 @@ const Pagination = ({
     }
   };
 
+  const PageItem = ({ page, isActive, onClick }: { page: number | string, isActive?: boolean, onClick?: () => void }) => {
+    if (typeof page === 'string') {
+      return (
+        <span className="flex w-10 h-10 items-center justify-center text-white/40 tracking-widest">
+          ...
+        </span>
+      )
+    }
+
+    return (
+      <button
+        onClick={onClick}
+        className={clsx(
+          "relative flex w-10 h-10 items-center justify-center rounded-full text-sm font-bold transition-all duration-300",
+          isActive 
+            ? "bg-primary text-white shadow-[0_0_20px_rgba(229,9,20,0.6)] scale-110 z-10" 
+            : "bg-[#1a1a1a] border border-white/5 text-gray-400 hover:bg-[#2a2a2a] hover:text-white hover:border-white/20 hover:-translate-y-1"
+        )}
+      >
+        {page}
+      </button>
+    )
+  }
+
   const renderPageNumbers = () => {
     const pages = [];
-    const maxPagesToShow = 3; // Số lượng trang lân cận hiện tại hiển thị
-    const halfPagesToShow = Math.floor(maxPagesToShow / 2); //Biến trung gian để tính toán khoảng cách từ trang hiện tại đến các trang lân cận.
+    const maxPagesToShow = 3;
+    const halfPagesToShow = Math.floor(maxPagesToShow / 2);
 
-    // Luôn hiển thị trang đầu tiên
     pages.push(
-      <span
-        className={`mx-1 cursor-pointer rounded border px-2 py-1 md:px-4 md:py-2 ${pageActive === 1 && "bg-blue-500 text-white ring-1"}`}
-        key={1}
-        onClick={() => handleSelectPage(1)}
-      >
-        1
-      </span>,
+      <PageItem 
+        key={1} 
+        page={1} 
+        isActive={pageActive === 1} 
+        onClick={() => handleSelectPage(1)} 
+      />
     );
 
-    // Hiển thị dấu chấm lửng nếu cần
     if (pageActive > halfPagesToShow + 2) {
-      pages.push(
-        <span className="mx-1 px-2 py-1" key="ellipsis1">
-          ...
-        </span>,
-      );
+      pages.push(<PageItem key="ellipsis1" page="..." />);
     }
-    // Tính toán các trang lân cận cần hiển thị
+
     const startPage = Math.max(2, pageActive - halfPagesToShow);
     const endPage = Math.min(totalPage - 1, pageActive + halfPagesToShow);
 
     for (let i = startPage; i <= endPage; i++) {
       pages.push(
-        <span
-          className={`mx-1 cursor-pointer rounded border px-2 py-1 md:px-4 md:py-2 ${pageActive === i && "bg-blue-500 text-white ring-1"}`}
-          key={i}
-          onClick={() => handleSelectPage(i)}
-        >
-          {i}
-        </span>,
+        <PageItem 
+          key={i} 
+          page={i} 
+          isActive={pageActive === i} 
+          onClick={() => handleSelectPage(i)} 
+        />
       );
     }
 
-    // Hiển thị dấu chấm lửng nếu cần
     if (pageActive < totalPage - halfPagesToShow - 1) {
-      pages.push(
-        <span className="mx-1 px-2 py-1" key="ellipsis2">
-          ...
-        </span>,
-      );
+      pages.push(<PageItem key="ellipsis2" page="..." />);
     }
 
-    // Luôn hiển thị trang cuối cùng
     if (totalPage > 1) {
       pages.push(
-        <span
-          className={`mx-1 cursor-pointer rounded border px-2 py-1 md:px-4 md:py-2 ${pageActive === totalPage && "bg-blue-500 text-white ring-1"}`}
-          key={totalPage}
-          onClick={() => handleSelectPage(totalPage)}
-        >
-          {totalPage}
-        </span>,
+        <PageItem 
+          key={totalPage} 
+          page={totalPage} 
+          isActive={pageActive === totalPage} 
+          onClick={() => handleSelectPage(totalPage)} 
+        />
       );
     }
 
@@ -103,20 +112,40 @@ const Pagination = ({
   };
 
   return (
-    <div>
-      <span
-        className={`mx-1 md:px-4 md:py-2 ${pageActive > 1 ? "cursor-pointer" : "cursor-default opacity-40"} rounded border px-2 py-1`}
+    <div className="flex items-center gap-2 p-2 bg-black/40 backdrop-blur-md rounded-full border border-white/5 shadow-2xl">
+      <button
         onClick={handlePrevPage}
+        disabled={pageActive <= 1}
+        className={clsx(
+          "flex w-10 h-10 items-center justify-center rounded-full transition-all duration-300",
+          pageActive > 1 
+            ? "bg-[#1a1a1a] text-white hover:bg-primary hover:shadow-[0_0_15px_rgba(229,9,20,0.5)] hover:-translate-x-1" 
+            : "text-white/20 cursor-not-allowed bg-transparent"
+        )}
       >
-        &lt;
-      </span>
-      {renderPageNumbers()}
-      <span
-        className={`mx-1 md:px-4 md:py-2 ${pageActive !== totalPage ? "cursor-pointer" : "cursor-default opacity-40"} rounded border px-2 py-1`}
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg>
+      </button>
+
+      <div className="flex items-center gap-1.5 px-2">
+        {renderPageNumbers()}
+      </div>
+
+      <button
         onClick={handleNextPage}
+        disabled={pageActive >= totalPage}
+        className={clsx(
+          "flex w-10 h-10 items-center justify-center rounded-full transition-all duration-300",
+          pageActive < totalPage 
+            ? "bg-[#1a1a1a] text-white hover:bg-primary hover:shadow-[0_0_15px_rgba(229,9,20,0.5)] hover:translate-x-1" 
+            : "text-white/20 cursor-not-allowed bg-transparent"
+        )}
       >
-        &gt;
-      </span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
+          <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
     </div>
   );
 };
