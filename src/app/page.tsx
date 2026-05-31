@@ -8,6 +8,7 @@ import Link from 'next/link'
 export default async function Home() {
   // Lấy toàn bộ dữ liệu song song (Parallel Data Fetching) để tối ưu tốc độ tải trang
   const [
+    { data: phimHotData },
     { data: phimBoData },
     { data: phimLeData },
     { data: hoatHinhData },
@@ -15,10 +16,11 @@ export default async function Home() {
     { data: genresData },
     { data: countriesData }
   ] = await Promise.all([
-    usefetch<ResponseMovies>('/danh-sach/phim-bo?limit=24'),
-    usefetch<ResponseMovies>('/danh-sach/phim-le?limit=12'),
-    usefetch<ResponseMovies>('/danh-sach/hoat-hinh?limit=12'),
-    usefetch<ResponseMovies>('/the-loai/co-trang?limit=12'),
+    usefetch<ResponseMovies>('/danh-sach/phim-hot?limit=15'),
+    usefetch<ResponseMovies>('/danh-sach/phim-bo?limit=15'),
+    usefetch<ResponseMovies>('/danh-sach/phim-le?limit=15'),
+    usefetch<ResponseMovies>('/danh-sach/hoat-hinh?limit=15'),
+    usefetch<ResponseMovies>('/the-loai/co-trang?limit=15'),
     usefetch<ResponseGenres>('/the-loai'),
     usefetch<ResponseCountries>('/quoc-gia')
   ])
@@ -28,13 +30,11 @@ export default async function Home() {
   }
 
   // Cắt bớt dữ liệu để hiển thị cho đẹp gọn
-  const phimBo = phimBoData.items?.slice(0, 10) || []
-  const phimLe = phimLeData.items?.slice(0, 10) || []
-  const hoatHinh = hoatHinhData?.items?.slice(0, 10) || []
-  const coTrang = coTrangData?.items?.slice(0, 10) || []
-  
-  // Dùng phim bộ cho Sidebar Hot (Thực tế nên có API phim hot riêng)
-  const phimHot = phimBoData.items?.slice(10, 20) || []
+  const phimBo = phimBoData?.items?.slice(0, 15) || []
+  const phimLe = phimLeData?.items?.slice(0, 15) || []
+  const hoatHinh = hoatHinhData?.items?.slice(0, 15) || []
+  const coTrang = coTrangData?.items?.slice(0, 15) || []
+  const phimHot = phimHotData?.items?.slice(0, 15) || []
 
   return (
     <div className='w-full pt-20 bg-[#0a0a0a] min-h-screen text-white'>
