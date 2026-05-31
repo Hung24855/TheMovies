@@ -2,6 +2,7 @@
 import { gennerateYear } from '@/base/utils/gennerate'
 import clsx from 'clsx'
 import { useRouter } from 'next-nprogress-bar'
+import { usePathname, useSearchParams } from 'next/navigation'
 import React, { useState, useEffect, useRef } from 'react'
 import { TiDeleteOutline } from '@/icons'
 import { IoMdArrowDropdown } from '@/icons'
@@ -27,6 +28,8 @@ enum FilterType {
 
 export default function FilterFirm({ genres = [], countries = [] }: FilterFirmProps) {
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
   const [selectedGenre, setSelectedGenre] = useState<filter | undefined>()
   const [selectedCountry, setSelectedCountry] = useState<filter | undefined>()
   const [selectedYear, setSelectedYear] = useState<filter | undefined>()
@@ -45,6 +48,41 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
     document.addEventListener("mousedown", handleClickOutside)
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [])
+
+  // Sync state with URL params and pathname
+  useEffect(() => {
+    const categorySlug = searchParams.get('category')
+    const countrySlug = searchParams.get('country')
+    const yearSlug = searchParams.get('year')
+
+    if (categorySlug) {
+      const g = genres.find(g => g.slug === categorySlug)
+      if (g) setSelectedGenre({ name: g.name, slug: g.slug })
+    } else {
+      setSelectedGenre(undefined)
+    }
+
+    if (countrySlug) {
+      const c = countries.find(c => c.slug === countrySlug)
+      if (c) setSelectedCountry({ name: c.name, slug: c.slug })
+    } else {
+      setSelectedCountry(undefined)
+    }
+
+    if (yearSlug) {
+      setSelectedYear({ name: yearSlug, slug: yearSlug })
+    } else {
+      setSelectedYear(undefined)
+    }
+
+    const currentSlug = pathname.split('/')[1] || ''
+    const type = movieTypes.find(t => t.slug === currentSlug)
+    if (type) {
+      setSelectedTypeMovie({ name: type.name as string, slug: type.slug as string })
+    } else {
+      setSelectedTypeMovie(undefined)
+    }
+  }, [searchParams, pathname, genres, countries])
 
   const toggleFilter = (filterType: FilterType) => {
     setActiveFilter(prev => prev === filterType ? null : filterType)
@@ -80,7 +118,14 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
       .map(([key, value]) => `${key}=${value}`)
       .join('&')
      
-    selectedTypeMovie ? router.push(`/${selectedTypeMovie.slug}?${searchParams}`) : router.push(`?${searchParams}`)
+    let targetPath = pathname
+    if (selectedTypeMovie) {
+      targetPath = `/${selectedTypeMovie.slug}`
+    } else if (pathname === '/') {
+      targetPath = '/phim-moi'
+    }
+
+    router.push(`${targetPath}?${searchParams}`)
   }
 
   const renderFilterButton = (
