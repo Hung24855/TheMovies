@@ -181,7 +181,6 @@ export default function SideBarMenu({ genres, countries }: { genres: Genres[]; c
             </Link>
           </ul>
         </div>
-        <IoMdClose size={35} className='absolute right-2 top-2 cursor-pointer z-[60] hover:text-primary transition-colors' onClick={() => setOpen(false)} />
       </div>
     </div>
   )
