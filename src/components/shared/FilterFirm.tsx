@@ -217,7 +217,7 @@ function FilterFirmInner({ genres = [], countries = [] }: FilterFirmProps) {
         </div>
 
         <div className='grid grid-cols-2 md:flex md:flex-wrap gap-2 w-full md:pb-0'>
-          {renderFilterButton(FilterType.typeMovie, selectedTypeMovie, 'Loại phim', movieTypes.slice(0,-3), false)}
+          {renderFilterButton(FilterType.typeMovie, selectedTypeMovie, 'Loại phim', movieTypes.filter(t => t.slug !== 'tim-kiem'), false)}
           {renderFilterButton(FilterType.genre, selectedGenre, 'Thể loại', genres, true)}
           {renderFilterButton(FilterType.country, selectedCountry, 'Quốc gia', countries, false)}
           {renderFilterButton(
