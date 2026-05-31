@@ -43,7 +43,7 @@ export default async function Home() {
         {/* ĐỀ CỬ (Slider) */}
         <div className='mb-8'>
           <h2 className='text-[22px] font-bold uppercase mb-4 text-white uppercase font-sans'>
-            ĐỀ CỬ
+            PHIM CHIẾU RẠP
           </h2>
           <FeaturedMovies />
         </div>

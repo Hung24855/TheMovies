@@ -6,7 +6,7 @@ import Image from 'next/image'
 
 export default async function FeaturedMovies() {
   const { data } = await usefetch<ResponseMovies>(
-    `/danh-sach/?sort_field=tmdb.vote_count&year=${new Date().getFullYear()}`
+    `/danh-sach/phim-chieu-rap?sort_field=tmdb.vote_count&limit=15&year=${new Date().getFullYear()}`
   )
   if (!data) return null
   const { items } = data
