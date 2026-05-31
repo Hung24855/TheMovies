@@ -18,7 +18,7 @@ export default function Favourite({ slug, name, thumb_url, lang, year, quality, 
   }, [favoriteMovies, slug])
 
   return (
-    <div className='flex items-center gap-2 md:gap-3'>
+    <div className='flex flex-wrap items-center gap-2 md:gap-3'>
       {/* Nút Share */}
       <div
         className='flex cursor-pointer items-center justify-center w-10 h-10 shrink-0 rounded-full bg-white/5 border border-white/10 hover:bg-white/20 transition-all duration-300'
@@ -44,7 +44,7 @@ export default function Favourite({ slug, name, thumb_url, lang, year, quality, 
       {/* Nút Yêu thích */}
       <div
         className={clsx(
-          'flex cursor-pointer items-center justify-center gap-2 rounded-md border px-4 py-2 font-medium transition-all duration-300 hover:-translate-y-0.5',
+          'flex cursor-pointer items-center h-10 justify-center gap-2 rounded-md border px-4 py-2 font-medium transition-all duration-300 hover:-translate-y-0.5',
           isFavourite 
             ? 'bg-primary/20 text-primary border-primary shadow-[0_0_15px_rgba(229,9,20,0.2)]' 
             : 'bg-white/5 text-white/80 border-white/10 hover:bg-white/10 hover:text-white'

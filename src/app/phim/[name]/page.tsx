@@ -14,7 +14,6 @@ import Image from 'next/image'
 
 export async function generateMetadata({ params }: { params: { name: string } }): Promise<Metadata> {
   const { data: movieDetail } = await usefetch<MovieDetail>(`/phim/${params.name}`)
-  console.dir(movieDetail, { depth: null })
 
   if (!movieDetail) {
     return {
@@ -216,7 +215,7 @@ export default async function MoviePage({
               {view?.toLocaleString() || 0} lượt xem
             </span>
             
-            <div className="flex items-center gap-3 w-full md:w-auto md:ml-auto mt-4 md:mt-0">
+            <div className="flex flex-wrap items-center gap-3 w-full md:w-auto md:ml-auto mt-4 md:mt-0">
               <Favourite
                 slug={slug}
                 name={name}
@@ -229,7 +228,7 @@ export default async function MoviePage({
               />
               
               {trailer_url && (
-                <a href={trailer_url} target="_blank" rel="noopener noreferrer" className='flex items-center bg-white/10 text-white px-5 py-2.5 rounded-md font-bold hover:bg-white/20 transition-all duration-300'>
+                <a href={trailer_url} target="_blank" rel="noopener noreferrer" className='flex items-center bg-white/10 text-white px-5 py-2 rounded-md font-bold hover:bg-white/20 transition-all duration-300'>
                   <FaPlay className='mr-2' size={12} />
                   Trailer
                 </a>

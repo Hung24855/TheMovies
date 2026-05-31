@@ -21,6 +21,7 @@ export default function HeaderClient({
   const [show, setShow] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
   const [isTop, setIsTop] = useState(true)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
 
   useEffect(() => {
     const controlNavbar = () => {
@@ -76,7 +77,10 @@ export default function HeaderClient({
                   <span className='font-black text-xs md:text-sm text-white drop-shadow-md tracking-tighter'>NH</span>
                 </div>
                 {/* Text Logo */}
-                <span className='hidden lg:block text-xl font-black tracking-widest text-white transition-all duration-300 group-hover:text-primary'>
+                <span className={clsx(
+                  'text-[17px] md:text-xl font-black tracking-widest text-white transition-all duration-300 group-hover:text-primary',
+                  isSearchOpen ? 'hidden md:block' : 'block'
+                )}>
                   HONG<span className='text-primary'>MOVIE</span>
                 </span>
               </Link>
@@ -183,7 +187,7 @@ export default function HeaderClient({
 
           {/* Search Area */}
           <div className='flex items-center h-full'>
-            <Search />
+            <Search onOpenChange={(open) => setIsSearchOpen(open)} />
           </div>
         </div>
       </div>

@@ -186,7 +186,7 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
           {renderFilterButton(
             FilterType.year,
             selectedYear,
-            'Năm phát hành',
+            'Năm',
             years.map((year) => ({ name: year, slug: year }))
           )}
         </div>
