@@ -35,7 +35,7 @@ export default function Favourite({ slug, name, thumb_url, lang, year, quality, 
       {status !== 'trailer' && (
         <a 
           href='#video'
-          className='flex items-center justify-center rounded-md bg-primary text-white font-bold px-4 py-2 hover:shadow-[0_0_20px_rgba(229,9,20,0.5)] hover:-translate-y-0.5 transition-all duration-300'
+          className='flex items-center justify-center rounded-md bg-primary text-white font-bold px-2 py-2 hover:shadow-[0_0_20px_rgba(229,9,20,0.5)] hover:-translate-y-0.5 transition-all duration-300'
         >
           Xem Phim
         </a>
@@ -44,7 +44,7 @@ export default function Favourite({ slug, name, thumb_url, lang, year, quality, 
       {/* Nút Yêu thích */}
       <div
         className={clsx(
-          'flex cursor-pointer items-center h-10 justify-center gap-2 rounded-md border px-4 py-2 font-medium transition-all duration-300 hover:-translate-y-0.5',
+          'flex cursor-pointer items-center h-10 justify-center gap-2 rounded-md border px-2 py-2 font-medium transition-all duration-300 hover:-translate-y-0.5',
           isFavourite 
             ? 'bg-primary/20 text-primary border-primary shadow-[0_0_15px_rgba(229,9,20,0.2)]' 
             : 'bg-white/5 text-white/80 border-white/10 hover:bg-white/10 hover:text-white'

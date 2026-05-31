@@ -228,7 +228,7 @@ export default async function MoviePage({
               />
               
               {trailer_url && (
-                <a href={trailer_url} target="_blank" rel="noopener noreferrer" className='flex items-center bg-white/10 text-white px-5 py-2 rounded-md font-bold hover:bg-white/20 transition-all duration-300'>
+                <a href={trailer_url} target="_blank" rel="noopener noreferrer" className='flex items-center bg-white/10 text-white px-2 py-2 rounded-md font-bold hover:bg-white/20 transition-all duration-300'>
                   <FaPlay className='mr-2' size={12} />
                   Trailer
                 </a>

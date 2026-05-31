@@ -32,7 +32,7 @@ export default async function GenresPage({ searchParams, params }: MovieContext)
       category && `&category=${category}`,
       sort_type && `&sort_type=${sort_type}`,
       country && `&country=${country}`,
-      sort_field === 'name' ? `&sort_field=${sort_field}&sort_type=asc` : '&sort_field=year'
+      '&sort_field=modified.time&sort_type=desc'
     ).replace(/\s+/g, '')
   )
 

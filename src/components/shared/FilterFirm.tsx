@@ -19,7 +19,6 @@ type filter = {
 }
 
 enum FilterType {
-  sort = 'sort',
   genre = 'genre',
   country = 'country',
   year = 'year',
@@ -28,7 +27,6 @@ enum FilterType {
 
 export default function FilterFirm({ genres = [], countries = [] }: FilterFirmProps) {
   const router = useRouter()
-  const [selectedSort, setSelectedSort] = useState<filter | undefined>()
   const [selectedGenre, setSelectedGenre] = useState<filter | undefined>()
   const [selectedCountry, setSelectedCountry] = useState<filter | undefined>()
   const [selectedYear, setSelectedYear] = useState<filter | undefined>()
@@ -54,9 +52,6 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
 
   const handleFilterClick = (filterType: FilterType, filter: filter | undefined) => {
     switch (filterType) {
-      case FilterType.sort:
-        setSelectedSort(filter)
-        break
       case FilterType.genre:
         setSelectedGenre(filter)
         break
@@ -75,7 +70,6 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
 
   const handleFilter = () => {
     const params = {
-      sort_field: selectedSort?.slug,
       category: selectedGenre?.slug,
       country: selectedCountry?.slug,
       year: selectedYear?.slug
@@ -99,10 +93,10 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
     const hasSelection = !!selectedFilter;
 
     return (
-      <div className='relative' key={filterType}>
+      <div className='relative w-full md:w-auto' key={filterType}>
         <div
           className={clsx(
-            'flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer transition-all duration-300 border text-sm font-medium',
+            'flex items-center justify-between gap-2 px-3 md:px-4 py-2 rounded-full cursor-pointer transition-all duration-300 border text-sm font-medium w-full',
             isActive || hasSelection 
               ? 'bg-primary/10 border-primary text-white shadow-[0_0_15px_rgba(229,9,20,0.2)]' 
               : 'bg-[#1a1a1a] border-white/10 text-gray-400 hover:bg-[#222] hover:text-white hover:border-white/20'
@@ -175,18 +169,14 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
           <span className='font-semibold tracking-wide uppercase text-sm whitespace-nowrap'>Bộ Lọc</span>
         </div>
 
-        <div className='flex flex-wrap gap-2 w-full md:pb-0'>
-          {renderFilterButton(FilterType.sort, selectedSort, 'Sắp xếp', [
-            { name: 'Năm xuất bản', slug: 'year' },
-            { name: 'Theo tên A-Z', slug: 'name' }
-          ])}
+        <div className='grid grid-cols-2 md:flex md:flex-wrap gap-2 w-full md:pb-0'>
           {renderFilterButton(FilterType.typeMovie, selectedTypeMovie, 'Loại phim', movieTypes.slice(0,-3))}
           {renderFilterButton(FilterType.genre, selectedGenre, 'Thể loại', genres)}
           {renderFilterButton(FilterType.country, selectedCountry, 'Quốc gia', countries)}
           {renderFilterButton(
             FilterType.year,
             selectedYear,
-            'Năm',
+            'Năm sản xuất',
             years.map((year) => ({ name: year, slug: year }))
           )}
         </div>
