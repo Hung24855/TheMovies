@@ -1,10 +1,11 @@
 "use client";
 
 import { useRouter } from "next-nprogress-bar";
-import { useState } from "react";
+import { useState, Suspense, useEffect } from "react";
 import clsx from "clsx";
+import { useSearchParams } from "next/navigation";
 
-const Pagination = ({
+const PaginationInner = ({
   initPage = 1,
   totalPage,
 }: {
@@ -13,19 +14,30 @@ const Pagination = ({
 }) => {
   const [pageActive, setPageActive] = useState<number>(() => initPage);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    setPageActive(initPage);
+  }, [initPage]);
+
+  const getPageUrl = (pageNumber: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", pageNumber.toString());
+    return `?${params.toString()}`;
+  };
 
   const handleSelectPage = (pageNumber: number) => {
     if (pageNumber !== pageActive) {
       setPageActive(pageNumber);
     }
-    router.push(`?page=${pageNumber}`);
+    router.push(getPageUrl(pageNumber));
   };
 
   const handlePrevPage = () => {
     if (pageActive > 1) {
       const newPageActive = pageActive - 1;
       setPageActive(newPageActive);
-      router.push(`?page=${newPageActive}`);
+      router.push(getPageUrl(newPageActive));
     }
   };
 
@@ -33,7 +45,7 @@ const Pagination = ({
     if (pageActive < totalPage) {
       const newPageActive = pageActive + 1;
       setPageActive(newPageActive);
-      router.push(`?page=${newPageActive}`);
+      router.push(getPageUrl(newPageActive));
     }
   };
 
@@ -147,6 +159,14 @@ const Pagination = ({
         </svg>
       </button>
     </div>
+  );
+};
+
+const Pagination = (props: { totalPage: number; initPage: number }) => {
+  return (
+    <Suspense fallback={<div className="flex w-full h-14 bg-white/5 animate-pulse rounded-full"></div>}>
+      <PaginationInner {...props} />
+    </Suspense>
   );
 };
 
