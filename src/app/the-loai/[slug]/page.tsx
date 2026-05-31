@@ -64,7 +64,7 @@ export default async function GenresPage({ searchParams, params }: MovieContext)
       {/* <div className="mt-2">
         <Breadcrumb />
       </div> */}
-      <div className='w-full px-4 md:px-12 lg:px-20 pt-32 relative z-20 min-h-screen'>
+      <div className='w-full px-4 md:px-12 lg:px-20 pt-20 relative z-20 min-h-screen'>
         <div className='pb-10'>
           <div className='relative z-50 mb-6 flex flex-col md:flex-row items-start md:items-center justify-between border-b border-white/10 pb-4'>
             <h1 className='text-2xl font-bold uppercase tracking-wider text-white mb-4 md:mb-0'>
