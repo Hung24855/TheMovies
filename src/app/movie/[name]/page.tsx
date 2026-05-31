@@ -5,9 +5,11 @@ import Episodes from '@/components/movie/Episodes'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import Favourite from '@/components/movie/Favourite'
+import Link from 'next/link'
 
 export async function generateMetadata({ params }: { params: { name: string } }): Promise<Metadata> {
   const { data: movieDetail } = await usefetch<MovieDetail>(`/phim/${params.name}`)
+  console.dir(movieDetail, { depth: null })
 
   if (!movieDetail) {
     return {
@@ -27,9 +29,9 @@ export default async function MoviePage({
   searchParams
 }: {
   params: { name: string }
-  searchParams: { tap: string }
+  searchParams: { tap?: string; server?: string }
 }) {
-  const { tap = '1' } = searchParams
+  const { tap = '1', server = '0' } = searchParams
 
   const { data: movieDetail } = await usefetch<MovieDetail>(`/phim/${params.name}`)
 
@@ -58,7 +60,9 @@ export default async function MoviePage({
     seoSchema: { image }
   } = seoOnPage
 
-  const { server_data: ListFirm = [] } = episodes[0]
+  const serverIndex = Number(server) || 0
+  const currentServer = episodes[serverIndex] || episodes[0] || {}
+  const { server_data: ListFirm = [] } = currentServer
 
   let srcIframe =
     ['completed', 'ongoing'].includes(status) && episode_current.toLowerCase() !== 'full'
@@ -153,9 +157,23 @@ export default async function MoviePage({
               referrerPolicy='no-referrer'
             ></iframe>
           </div>
+          {/* Chọn server */}
+          {episodes.length > 0 && (
+            <div className='flex flex-wrap gap-2 mb-2'>
+              {episodes.map((ep: any, idx: number) => (
+                <Link
+                  key={idx}
+                  href={`?server=${idx}&tap=${tap}`}
+                  scroll={false}
+                  className={`rounded px-4 py-2 ${serverIndex === idx ? 'bg-primary text-black' : 'bg-[#191919] text-white hover:bg-primary/80'}`}
+                >
+                  {ep.server_name}
+                </Link>
+              ))}
+            </div>
+          )}
           {/* Chọn tập phim */}
-          <p>{episodes[0].server_name}</p>
-          <Episodes ListFirm={ListFirm} initEpisode={tap} />
+          <Episodes key={serverIndex} ListFirm={ListFirm} initEpisode={tap} serverIndex={serverIndex} />
         </>
       )}
     </div>

@@ -9,7 +9,15 @@ type ListFirm = {
   link_embed: string
 }
 
-export default function Episodes({ ListFirm = [], initEpisode }: { ListFirm: ListFirm[]; initEpisode: string }) {
+export default function Episodes({
+  ListFirm = [],
+  initEpisode,
+  serverIndex = 0
+}: {
+  ListFirm: ListFirm[]
+  initEpisode: string
+  serverIndex?: number
+}) {
   const [Episode, setEpisode] = useState<number>(() => Number(initEpisode))
   const router = useRouter()
 
@@ -27,7 +35,7 @@ export default function Episodes({ ListFirm = [], initEpisode }: { ListFirm: Lis
             onClick={() => {
               if (Episode !== Number(name)) {
                 setEpisode(Number(name))
-                router.push(`?tap=${name}`, { scroll: false })
+                router.push(`?server=${serverIndex}&tap=${name}`, { scroll: false })
               }
             }}
           >
