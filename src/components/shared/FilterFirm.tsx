@@ -3,7 +3,7 @@ import { gennerateYear } from '@/base/utils/gennerate'
 import clsx from 'clsx'
 import { useRouter } from 'next-nprogress-bar'
 import { usePathname, useSearchParams } from 'next/navigation'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { TiDeleteOutline } from '@/icons'
 import { IoMdArrowDropdown } from '@/icons'
 import { movieTypes } from '@/app/[typeParam]/constants'
@@ -26,7 +26,7 @@ enum FilterType {
   typeMovie = 'type'
 }
 
-export default function FilterFirm({ genres = [], countries = [] }: FilterFirmProps) {
+function FilterFirmInner({ genres = [], countries = [] }: FilterFirmProps) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -238,5 +238,13 @@ export default function FilterFirm({ genres = [], countries = [] }: FilterFirmPr
         </button>
       </div>
     </div>
+  )
+}
+
+export default function FilterFirm(props: FilterFirmProps) {
+  return (
+    <Suspense fallback={<div className="w-full md:w-[600px] h-[72px] bg-white/5 animate-pulse rounded-md"></div>}>
+      <FilterFirmInner {...props} />
+    </Suspense>
   )
 }
