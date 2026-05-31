@@ -270,7 +270,7 @@ export default async function MoviePage({
                 {episodes.map((sv, index) => (
                   <Link
                     key={index}
-                    href={`?server=${index}`}
+                    href={`?tap=${tap}&server=${index}`}
                     className={clsx(
                       'px-5 py-2 rounded-md font-bold text-sm transition-all duration-300',
                       serverIndex === index
@@ -290,7 +290,7 @@ export default async function MoviePage({
                 {listFirmData.map((firm: any, index: number) => (
                   <Link
                     key={index}
-                    href={`?tap=${firm.name}`}
+                    href={`?tap=${firm.name}&server=${serverIndex}`}
                     className={clsx(
                       'px-2 py-2.5 text-center rounded-md font-bold text-sm transition-all duration-300',
                       (tap === firm.name || (!tap && index === 0))
